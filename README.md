@@ -11,7 +11,6 @@ A minimalist Snake clone built with React, TypeScript, and HTML Canvas — focus
 ![Contributions welcome](https://img.shields.io/badge/Contributions-Welcome-brightgreen.svg)
 [![Play Now](https://img.shields.io/badge/▶%20Play%20Now-00C853?logo=github&logoColor=white)](https://nickthedevopsguy.github.io/Snake/)
 
-
 🧩 This project is part of my ongoing React fundamentals journey exploring how to handle real-time loops, keyboard input, and canvas drawing inside React without heavy frameworks.
 
 ---
@@ -42,12 +41,13 @@ A minimalist Snake clone built with React, TypeScript, and HTML Canvas — focus
 
 ## Contributing
 
-We love contributions of all kinds! Whether it’s fixing a bug, suggesting a feature, or polishing docs, your help makes this game better.  
+We love contributions of all kinds! Whether it’s fixing a bug, suggesting a feature, or polishing docs, your help makes this game better.
 
-How to join in:  
-- Fork & open a PR 
+How to join in:
+
+- Fork & open a PR
 - Add yourself to [Contributors](./CONTRIBUTORS.md)
-- Share ideas in [roadmap discussions](https://github.com/users/NickTheDevOpsGuy/projects/5)  
+- Share ideas in [roadmap discussions](https://github.com/users/NickTheDevOpsGuy/projects/5)
 - Report bugs via [Issues](https://github.com/NickTheDevOpsGuy/Snake/issues)
 
 Every contribution, big or small, helps keep this project alive 🎉
@@ -55,6 +55,7 @@ Every contribution, big or small, helps keep this project alive 🎉
 ---
 
 ## 🚧 Roadmap
+
 Check upcoming ideas and milestones in the [Project Roadmap](https://github.com/users/NickTheDevOpsGuy/projects/5).
 
 ---
@@ -62,9 +63,9 @@ Check upcoming ideas and milestones in the [Project Roadmap](https://github.com/
 ## Acknowledgements
 
 Minesweeper is a community project, shaped by everyone who’s played, tested, and contributed.  
-Every commit, idea, and bug report makes the game better.  
+Every commit, idea, and bug report makes the game better.
 
-[![Contributors](https://contrib.rocks/image?repo=NickTheDevOpsGuy/Snake)](./CONTRIBUTORS.md)  
+[![Contributors](https://contrib.rocks/image?repo=NickTheDevOpsGuy/Snake)](./CONTRIBUTORS.md)
 
 Meet all our amazing [Contributors](./CONTRIBUTORS.md)
 
@@ -135,7 +136,7 @@ git clone git@github.com:NickTheDevOpsGuy/Snake.git
 
 2. Install dependencies
 
-```bash 
+```bash
 npm install
 ```
 
@@ -157,10 +158,10 @@ npm test
 
 ## Tech Stack
 
-| Name                                                                  | Version | Description                                                 |
-| :-------------------------------------------------------------------- | :------ | :---------------------------------------------------------- |
-| [React](https://react.dev/)                                           | ^18.3.1 | UI library for building components.                         |
-| [Vite](https://vitejs.dev/)                                           | ^6.0.5  | Fast dev server & bundler.                                  |
+| Name                        | Version | Description                         |
+| :-------------------------- | :------ | :---------------------------------- |
+| [React](https://react.dev/) | ^18.3.1 | UI library for building components. |
+| [Vite](https://vitejs.dev/) | ^6.0.5  | Fast dev server & bundler.          |
 
 ---
 
@@ -168,26 +169,26 @@ npm test
 
 Run with `npm run <script>` (see package.json for full list).
 
-| Category        | Script         | What it does                                                                 |
-|-----------------|----------------|-------------------------------------------------------------------------------|
-| **Dev**         | `dev`          | Start Vite dev server                                                         |
-|                 | `build`        | Type-check (tsc -b) then build with Vite                                      |
-|                 | `preview`      | Preview the production build                                                   |
-| **Test**        | `test`         | Placeholder test script (exits 0)                                             |
-|                 | `test:watch`   | Run Vitest in watch mode                                                      |
-| **Deploy**      | `predeploy`    | Build before deploy                                                            |
-|                 | `deploy`       | Publish `dist/` to GitHub Pages via `gh-pages`                                |
-| **Lint/Format** | `lint`         | ESLint for JS/TS (`.`, extensions: js, jsx, ts, tsx)                          |
-|                 | `lint:fix`     | ESLint with `--fix`                                                           |
-|                 | `format`       | Prettier write across the repo                                                |
-|                 | `format:check` | Prettier check (no writes)                                                    |
-|                 | `lint:css`     | Stylelint for `**/*.{css,scss}` (includes build output unless ignored)        |
-|                 | `lint:css:fix` | Stylelint `--fix` for `src/**/*.{css,scss}`                                   |
-| **Checks**      | `check`        | Run Prettier (write) then ESLint                                              |
-|                 | `check:fix`    | Run Prettier (write) then ESLint with `--fix`                                 |
-| **TypeScript**  | `tscheck`      | TypeScript type-check only (no emit)                                          |
-| **Tooling**     | `precheck`     | Run `scripts/precheck.sh` (project preflight)                                 |
-| **Git Hooks**   | `prepare`      | Run Husky setup on install                                                    |
+| Category        | Script         | What it does                                                           |
+| --------------- | -------------- | ---------------------------------------------------------------------- |
+| **Dev**         | `dev`          | Start Vite dev server                                                  |
+|                 | `build`        | Type-check (tsc -b) then build with Vite                               |
+|                 | `preview`      | Preview the production build                                           |
+| **Test**        | `test`         | Placeholder test script (exits 0)                                      |
+|                 | `test:watch`   | Run Vitest in watch mode                                               |
+| **Deploy**      | `predeploy`    | Build before deploy                                                    |
+|                 | `deploy`       | Publish `dist/` to GitHub Pages via `gh-pages`                         |
+| **Lint/Format** | `lint`         | ESLint for JS/TS (`.`, extensions: js, jsx, ts, tsx)                   |
+|                 | `lint:fix`     | ESLint with `--fix`                                                    |
+|                 | `format`       | Prettier write across the repo                                         |
+|                 | `format:check` | Prettier check (no writes)                                             |
+|                 | `lint:css`     | Stylelint for `**/*.{css,scss}` (includes build output unless ignored) |
+|                 | `lint:css:fix` | Stylelint `--fix` for `src/**/*.{css,scss}`                            |
+| **Checks**      | `check`        | Run Prettier (write) then ESLint                                       |
+|                 | `check:fix`    | Run Prettier (write) then ESLint with `--fix`                          |
+| **TypeScript**  | `tscheck`      | TypeScript type-check only (no emit)                                   |
+| **Tooling**     | `precheck`     | Run `scripts/precheck.sh` (project preflight)                          |
+| **Git Hooks**   | `prepare`      | Run Husky setup on install                                             |
 
 ---
 
