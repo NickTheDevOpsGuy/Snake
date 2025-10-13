@@ -1,12 +1,12 @@
 # .github/workflows/linkmap-ci.yml
-name: 🗺️ LinkMap — CI (Prettier · ESLint · TSC)
+name: 🐍 Snake — CI (Prettier · ESLint · TSC)
 
 on:
   push:
   pull_request:
 
 concurrency:
-  group: linkmap-${{ github.ref }}
+  group: snake-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
