@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "types": ["vite/client"],
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "include": ["src", "src/types", "vite.config.ts"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
