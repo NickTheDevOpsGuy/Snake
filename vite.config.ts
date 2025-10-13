@@ -3,13 +3,6 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 
-let tailwindPlugin: any;
-try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  tailwindPlugin = require("@tailwindcss/vite").default();
-} catch {}
-
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
