@@ -44,9 +44,9 @@ jobs:
       - name: 🎨 Prettier — check formatting
         run: |
           npx prettier \
-          --config .prettierrc.yml \
+          --config $GITHUB_WORKSPACE/.prettierrc.yml \
           --check . \
-          --ignore-path .prettierignore
+          --ignore-path $GITHUB_WORKSPACE/.prettierignore
 
       - name: ✨ ESLint — lint code
         run: npx eslint . --max-warnings=0
