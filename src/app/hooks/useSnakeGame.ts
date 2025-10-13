@@ -1,14 +1,14 @@
-import { useCallback, useRef, useState } from "react";
-import type { XY, Dir } from "@/types";
-import { eq, nextHead, outOfBounds, initSnake } from "@/utils/logic";
-import { COLS, ROWS } from "@/constants/game";
+import { useCallback, useRef, useState } from 'react';
+import type { XY, Dir } from '@/types';
+import { eq, nextHead, outOfBounds, initSnake } from '@/utils/logic';
+import { COLS, ROWS } from '@/constants/game';
 
 /**
  * Game state + rules (no rendering).
  * Accepts a cell picker so you can swap randomness later (tests/determinism).
  */
 export function useSnakeGame(pickFreeCell: (snake: XY[]) => XY) {
-  const dirRef = useRef<Dir>("right");
+  const dirRef = useRef<Dir>('right');
   const nextDirRef = useRef<Dir | null>(null); // queue one turn per tick
   const snakeRef = useRef<XY[]>(initSnake());
   const foodRef = useRef<XY | null>(null);
@@ -18,7 +18,7 @@ export function useSnakeGame(pickFreeCell: (snake: XY[]) => XY) {
 
   const reset = useCallback(() => {
     snakeRef.current = initSnake();
-    dirRef.current = "right";
+    dirRef.current = 'right';
     nextDirRef.current = null;
     foodRef.current = pickFreeCell(snakeRef.current);
     setAlive(true);
@@ -65,9 +65,13 @@ export function useSnakeGame(pickFreeCell: (snake: XY[]) => XY) {
 
   return {
     // state
-    alive, score,
-    snakeRef, foodRef,
+    alive,
+    score,
+    snakeRef,
+    foodRef,
     // controls
-    reset, turn, tick,
+    reset,
+    turn,
+    tick,
   };
 }

@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import { keyToDir, type Dir } from "@/types";
-import { isOpposite } from "@/utils/logic";
+import { useEffect } from 'react';
+import { keyToDir, type Dir } from '@/types';
+import { isOpposite } from '@/utils/logic';
 
 /** Keyboard input handler. Keeps component clean. */
 export function useInput(opts: {
@@ -13,7 +13,7 @@ export function useInput(opts: {
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.code === "Space") {
+      if (e.code === 'Space') {
         if (!alive) onRestart();
         return;
       }
@@ -24,7 +24,7 @@ export function useInput(opts: {
       if (!isOpposite(cur, next)) onTurn(next);
     };
 
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
   }, [alive, getCurrentDir, onTurn, onRestart]);
 }

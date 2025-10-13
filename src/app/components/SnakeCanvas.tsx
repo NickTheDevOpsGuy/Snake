@@ -1,15 +1,15 @@
-import { useCallback, useEffect, useState } from "react";
-import { CELL, COLS, ROWS, TICK_MS } from "@/constants/game";
-import { type XY, type Dir } from "@/types";
-import { randomFreeCell, inferDirFromSnake } from "@/utils/logic";
-import { drawFrame } from "@/utils/canvas";
-import { useTicker } from "@/hooks/useTicker";
-import { useSnakeGame } from "@/hooks/useSnakeGame";
-import { useInput } from "@/hooks/useInput";
-import { useCanvas2D } from "@/hooks/useCanvas2D";
-import { useBestScore } from "@/hooks/useBestScore";
-import { usePauseHotkey } from "@/hooks/usePauseHotkey";
-import HUD from "@/components/HUD";
+import { useCallback, useEffect, useState } from 'react';
+import { CELL, COLS, ROWS, TICK_MS } from '@/constants/game';
+import { type XY, type Dir } from '@/types';
+import { randomFreeCell, inferDirFromSnake } from '@/utils/logic';
+import { drawFrame } from '@/utils/canvas';
+import { useTicker } from '@/hooks/useTicker';
+import { useSnakeGame } from '@/hooks/useSnakeGame';
+import { useInput } from '@/hooks/useInput';
+import { useCanvas2D } from '@/hooks/useCanvas2D';
+import { useBestScore } from '@/hooks/useBestScore';
+import { usePauseHotkey } from '@/hooks/usePauseHotkey';
+import HUD from '@/components/HUD';
 
 export default function SnakeCanvas() {
   const { canvasRef, ctxRef } = useCanvas2D();
@@ -18,12 +18,19 @@ export default function SnakeCanvas() {
   const [paused, setPaused] = useState(false);
 
   // hook expects (snake) => XY; adapt our util (needs cols/rows)
-  const pickCell = useCallback((snake: XY[]) => randomFreeCell(snake, COLS, ROWS), []);
+  const pickCell = useCallback(
+    (snake: XY[]) => randomFreeCell(snake, COLS, ROWS),
+    []
+  );
 
-  const { alive, score, snakeRef, foodRef, reset, turn, tick } = useSnakeGame(pickCell);
+  const { alive, score, snakeRef, foodRef, reset, turn, tick } =
+    useSnakeGame(pickCell);
 
   // derive current dir from snake (for opposite-turn guard)
-  const getCurrentDir = useCallback((): Dir => inferDirFromSnake(snakeRef.current), [snakeRef]);
+  const getCurrentDir = useCallback(
+    (): Dir => inferDirFromSnake(snakeRef.current),
+    [snakeRef]
+  );
 
   // drawing (refs don't change, so only depend on 'alive')
   const draw = useCallback(() => {
@@ -80,7 +87,13 @@ export default function SnakeCanvas() {
   return (
     <>
       <canvas ref={canvasRef} width={COLS * CELL} height={ROWS * CELL} />
-      <HUD score={score} best={best} bump={bump} alive={alive} onRestart={restartAndDraw} />
+      <HUD
+        score={score}
+        best={best}
+        bump={bump}
+        alive={alive}
+        onRestart={restartAndDraw}
+      />
     </>
   );
 }

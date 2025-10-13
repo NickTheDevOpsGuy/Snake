@@ -1,8 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 export function useTicker(ms: number, tick: () => void, running: boolean) {
   const saved = useRef(tick);
-  useEffect(() => { saved.current = tick; }, [tick]);
+  useEffect(() => {
+    saved.current = tick;
+  }, [tick]);
 
   useEffect(() => {
     if (!running) return;
