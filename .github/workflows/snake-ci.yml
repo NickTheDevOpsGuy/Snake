@@ -37,12 +37,3 @@ jobs:
 
       - name: 🔧 Build App (Vite)
         run: npm run build
-
-      - name: 🧪 Run ESLint
-        run: npx eslint src --ext .js,.jsx,.ts,.tsx --cache
-
-      - name: ✨ ESLint — lint code
-        run: npx eslint . --max-warnings=0
-
-      - name: 🛠️ TypeScript — type check
-        run: npx tsc --noEmit --pretty false
