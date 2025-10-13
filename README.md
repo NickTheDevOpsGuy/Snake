@@ -77,10 +77,27 @@ Meet all our amazing [Contributors](./CONTRIBUTORS.md)
 │   └── workflows
 │       └── snake-ci.yml
 ├── .gitignore
-├── .husky/
-  ├── pre-commit
-  ├── pre-push
-  └── _/husky.sh
+├── .husky
+│   ├── _
+│   │   ├── .gitignore
+│   │   ├── applypatch-msg
+│   │   ├── commit-msg
+│   │   ├── h
+│   │   ├── husky.sh
+│   │   ├── post-applypatch
+│   │   ├── post-checkout
+│   │   ├── post-commit
+│   │   ├── post-merge
+│   │   ├── post-rewrite
+│   │   ├── pre-applypatch
+│   │   ├── pre-auto-gc
+│   │   ├── pre-commit
+│   │   ├── pre-merge-commit
+│   │   ├── pre-push
+│   │   ├── pre-rebase
+│   │   └── prepare-commit-msg
+│   ├── pre-commit
+│   └── pre-push
 ├── .prettierignore
 ├── .prettierrc
 ├── .prettierrc.json
@@ -95,20 +112,34 @@ Meet all our amazing [Contributors](./CONTRIBUTORS.md)
 ├── scripts
 │   └── precheck.sh
 ├── src
-│   ├── .DS_Store
 │   └── app
-│       ├── .DS_Store
-│       ├── App.js
 │       ├── App.tsx
 │       ├── assets
 │       │   └── snake-gameplay.gif
 │       ├── components
-│       │   ├── SnakeCanvas.js
+│       │   ├── Board.tsx
+│       │   ├── HUD.tsx
 │       │   └── SnakeCanvas.tsx
-│       ├── main.js
+│       ├── constants
+│       │   └── game.ts
+│       ├── hooks
+│       │   ├── useBestScore.ts
+│       │   ├── useCanvas2D.ts
+│       │   ├── useInput.ts
+│       │   ├── usePauseHotkey.ts
+│       │   ├── useSnake.ts
+│       │   ├── useSnakeGame.ts
+│       │   └── useTicker.ts
 │       ├── main.tsx
-│       └── styles
-│           └── App.css
+│       ├── styles
+│       │   └── App.css
+│       ├── types
+│       │   ├── game.ts
+│       │   ├── index.ts
+│       │   └── ui.ts
+│       └── utils
+│           ├── canvas.ts
+│           └── logic.ts
 ├── tsconfig.json
 ├── tsconfig.node.json
 └── vite.config.ts

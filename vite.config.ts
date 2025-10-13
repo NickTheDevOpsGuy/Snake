@@ -15,7 +15,7 @@ export default defineConfig({
     },
   },
   build: {
-    cssCodeSplit: false, // combine all CSS into one file
+    cssCodeSplit: false, // combi q qne all CSS into one file
     rollupOptions: {
       output: {
         inlineDynamicImports: true, // disables code splitting

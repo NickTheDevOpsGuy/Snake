@@ -1,19 +1,21 @@
+/* ——— Tailwind base ——— */
+@import "tailwindcss";
+
+/* ——— Custom animation ——— */
 @keyframes bump {
   0% {
     transform: scale(1);
   }
-
   35% {
     transform: scale(1.12);
   }
-
   100% {
     transform: scale(1);
   }
 }
 
 .score-bump {
-  display: inline-block; /* so scale doesn’t stretch the row */
+  display: inline-block; /* so the scale doesn’t stretch siblings */
   animation: bump 180ms ease;
 }
 
@@ -21,4 +23,15 @@
   .score-bump {
     animation: none;
   }
+}
+
+/* ——— Optional extras ——— */
+/* Slight body padding + dark background (helps with layout) */
+body {
+  @apply bg-black text-white font-mono;
+}
+
+/* Center canvas nicely when needed */
+canvas {
+  @apply block mx-auto rounded;
 }

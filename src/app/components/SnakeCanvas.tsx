@@ -1,66 +1,86 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { CELL, COLS, ROWS, TICK_MS } from "@/constants/game";
-import { keyToDir } from "@/types";
-import { isOpposite } from "@/utils/logic";
-import { drawFood, drawGrid, drawSnake, drawGameOver } from "@/utils/canvas";
+import { type XY, type Dir } from "@/types";
+import { randomFreeCell, inferDirFromSnake } from "@/utils/logic";
+import { drawFrame } from "@/utils/canvas";
 import { useTicker } from "@/hooks/useTicker";
 import { useSnakeGame } from "@/hooks/useSnakeGame";
+import { useInput } from "@/hooks/useInput";
+import { useCanvas2D } from "@/hooks/useCanvas2D";
+import { useBestScore } from "@/hooks/useBestScore";
+import { usePauseHotkey } from "@/hooks/usePauseHotkey";
+import HUD from "@/components/HUD";
 
 export default function SnakeCanvas() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
+  const { canvasRef, ctxRef } = useCanvas2D();
+
   const [bump, setBump] = useState(false);
+  const [paused, setPaused] = useState(false);
 
-  const randomFreeCell = useCallback((snake) => {
-    while (true) {
-      const x = Math.floor(Math.random() * COLS);
-      const y = Math.floor(Math.random() * ROWS);
-      if (!snake.some((c: any) => c.x === x && c.y === y)) return { x, y };
-    }
-  }, []);
+  // hook expects (snake) => XY; adapt our util (needs cols/rows)
+  const pickCell = useCallback((snake: XY[]) => randomFreeCell(snake, COLS, ROWS), []);
 
-  const { alive, score, snakeRef, foodRef, reset, turn, tick } =
-    useSnakeGame(randomFreeCell);
+  const { alive, score, snakeRef, foodRef, reset, turn, tick } = useSnakeGame(pickCell);
 
-  // draw frame
+  // derive current dir from snake (for opposite-turn guard)
+  const getCurrentDir = useCallback((): Dir => inferDirFromSnake(snakeRef.current), [snakeRef]);
+
+  // drawing (refs don't change, so only depend on 'alive')
   const draw = useCallback(() => {
-    const ctx = ctxRef.current; if (!ctx) return;
-    drawGrid(ctx); drawFood(ctx, foodRef.current); drawSnake(ctx, snakeRef.current);
-    if (!alive) drawGameOver(ctx);
-  }, [alive]);
+    const ctx = ctxRef.current;
+    if (!ctx) return;
+    drawFrame(ctx, alive, foodRef.current, snakeRef.current);
+  }, [alive, ctxRef, foodRef, snakeRef]);
 
-  // bump anim on score
+  // score bump animation
   useEffect(() => {
-    setBump(true); const id = setTimeout(() => setBump(false), 200);
+    setBump(true);
+    const id = setTimeout(() => setBump(false), 200);
     return () => clearTimeout(id);
   }, [score]);
 
-  // ticker
-  useTicker(TICK_MS, () => { if (alive) { tick(); draw(); } }, alive);
+  // best score persistence
+  const best = useBestScore(score);
 
-  // init + key handling
+  // mount-only: first reset + first draw
   useEffect(() => {
-    const c = canvasRef.current; ctxRef.current = c?.getContext("2d") ?? null;
-    reset(); draw();
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.code === "Space" && !alive) { reset(); return; }
-      const next = keyToDir[e.key]; if (!next) return;
-      e.preventDefault();
-      // guard opposites (needs current dir; we infer from head vs second cell)
-      const [h, s] = snakeRef.current;
-      const cur = s ? (h.x === s.x ? (h.y < s.y ? "up" : "down") : (h.x < s.x ? "left" : "right")) : "right";
-      if (!isOpposite(cur as any, next)) turn(next);
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [alive, draw, reset, turn]);
+    reset();
+    draw();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ticker drives the game when alive and not paused
+  useTicker(
+    TICK_MS,
+    () => {
+      if (alive && !paused) {
+        tick();
+        draw();
+      }
+    },
+    true
+  );
+
+  // keyboard input (arrows + Space restart)
+  const restartAndDraw = useCallback(() => {
+    reset();
+    draw();
+  }, [reset, draw]);
+
+  useInput({
+    alive,
+    getCurrentDir,
+    onTurn: turn,
+    onRestart: restartAndDraw,
+  });
+
+  // "P" to pause/resume when alive
+  usePauseHotkey(alive, () => setPaused((p) => !p));
 
   return (
     <>
       <canvas ref={canvasRef} width={COLS * CELL} height={ROWS * CELL} />
-      <div className="mt-3 text-center font-mono text-lg text-gray-100">
-        <span className={bump ? "score-bump" : ""}>Score: {score}</span>
-      </div>
+      <HUD score={score} best={best} bump={bump} alive={alive} onRestart={restartAndDraw} />
     </>
   );
 }
