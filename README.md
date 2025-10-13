@@ -14,6 +14,7 @@ _Visualize your LinkedIn network like a constellation — built with React, Type
 ---
 
 ## 🎯 Features
+
 - ⚡ Smooth Canvas Rendering — real-time updates without unnecessary re-renders
 - 🎮 Arrow Key Controls — responsive, with spacebar restart
 - 🍎 Dynamic Food Spawning — random positions, never overlaps the snake
@@ -21,7 +22,6 @@ _Visualize your LinkedIn network like a constellation — built with React, Type
 - 🔁 Clean Restart Logic — quick replay loop with instant feedback
 - 💫 Animated Score Pop — subtle CSS bump when you eat food
 - 🌑 Dark Grid Aesthetic — modern look with subtle borders and Tailwind styling
-
 
 ---
 
