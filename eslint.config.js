@@ -5,21 +5,20 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import globals from "globals";
 import tseslint from "typescript-eslint";
-import eslintConfigPrettier from "eslint-config-prettier"; // disables stylistic conflicts
 
 export default [
-  // 1️⃣ Ignore build and coverage output
+  // 🧹 Ignore build + coverage folders
   { ignores: ["dist", "coverage"] },
 
-  // 2️⃣ Base configs
+  // ✅ Base + TypeScript + React presets
   js.configs.recommended,
   ...tseslint.configs.recommended,
   reactHooks.configs["recommended-latest"],
   reactRefresh.configs.vite,
 
-  // 3️⃣ App source (TypeScript + React)
+  // 🧩 App code (browser)
   {
-    files: ["src/**/*.{ts,tsx}"],
+    files: ["src/**/*.{ts,tsx,js,jsx}"],
     languageOptions: {
       parser: tseslint.parser,
       ecmaVersion: "latest",
@@ -29,33 +28,29 @@ export default [
     },
     plugins: { react },
     rules: {
-      // Base React tweaks
-      "react/react-in-jsx-scope": "off", // Not needed with React 17+
+      // 🧠 React 17+ no longer requires importing React in JSX
+      "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
 
-      // React rules downgraded to warnings for DX
-      ...(() => {
-        const base = react?.configs?.recommended?.rules ?? {};
-        return Object.fromEntries(
-          Object.entries(base).map(([rule, val]) => [
-            rule,
-            val === "error" ? "warn" : val,
-          ])
-        );
-      })(),
-
-      // TypeScript + expression handling
+      // 🧹 Lint polish
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
       "@typescript-eslint/no-unused-expressions": [
         "error",
         { allowShortCircuit: true, allowTernary: true },
       ],
+      "react-hooks/exhaustive-deps": "warn",
     },
-    settings: { react: { version: "detect" } },
+    settings: {
+      react: { version: "detect" },
+    },
   },
 
-  // 4️⃣ Tests (Vitest globals)
+  // 🧪 Tests (Vitest)
   {
-    files: ["tests/**/*.{ts,tsx}", "**/*.test.{ts,tsx}"],
+    files: ["tests/**/*.{ts,tsx,js,jsx}", "**/*.test.{ts,tsx,js,jsx}"],
     languageOptions: {
       parser: tseslint.parser,
       ecmaVersion: "latest",
@@ -63,10 +58,13 @@ export default [
       parserOptions: { ecmaFeatures: { jsx: true } },
       globals: { ...globals.browser, ...globals.vitest },
     },
-    rules: {},
+    plugins: { react },
+    rules: {
+      "react/react-in-jsx-scope": "off",
+    },
   },
 
-  // 5️⃣ Configs + tooling (Node env)
+  // ⚙️ Config + scripts (Node env)
   {
     files: [
       "*.config.{js,cjs,mjs,ts}",
@@ -81,7 +79,4 @@ export default [
       globals: globals.node,
     },
   },
-
-  // 6️⃣ Prettier compatibility (keep LAST)
-  eslintConfigPrettier,
 ];
