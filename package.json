@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -p tsconfig.node.json --noEmit && vite build",
     "preview": "vite preview",
     "test": "echo \"No tests yet\" && exit 0",
     "test:watch": "vitest",
@@ -19,7 +19,7 @@
     "lint:css:fix": "stylelint \"src/**/*.{css,scss}\" --fix",
     "check": "npm run format && npm run lint",
     "check:fix": "npm run format && npm run lint:fix",
-    "tscheck": "tsc --noEmit",
+    "tscheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.node.json --noEmit",
     "precheck": "bash ./scripts/precheck.sh",
     "prepare": "husky"
   },
