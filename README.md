@@ -2,7 +2,7 @@
 
 A minimalist Snake clone built with React, TypeScript, and HTML Canvas — focused on mastering game loops, keyboard input, and UI feedback using React hooks and refs.
 
-[![CI](https://github.com/NickTheDevOpsGuy/Snake/actions/workflows/snake-ci.yml/badge.svg?branch=main)](https://github.com/NickTheDevOpsGuy/Snake/actions/workflows/snake-ci.yml)
+[![CI](https://github.com/NickTheDevOpsGuy/Snake/actions/workflows/snake-ci.yml/badge.svg)](https://github.com/NickTheDevOpsGuy/Snake/actions/workflows/snake-ci.yml)
 ![Built with React](https://img.shields.io/badge/Built%20with-React-61dafb?logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178c6?logo=typescript&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38bdf8?logo=tailwind-css&logoColor=white)
