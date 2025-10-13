@@ -7,21 +7,35 @@
     "dev": "vite",
     "build": "tsc -p tsconfig.node.json --noEmit && vite build",
     "preview": "vite preview",
+
     "test": "echo \"No tests yet\" && exit 0",
     "test:watch": "vitest",
+
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
+
     "lint": "eslint . --ext js,jsx,ts,tsx",
     "lint:fix": "eslint . --ext js,jsx,ts,tsx --fix",
+
     "format": "prettier . --write",
     "format:check": "prettier . --check",
+
     "lint:css": "stylelint \"**/*.{css,scss}\"",
     "lint:css:fix": "stylelint \"src/**/*.{css,scss}\" --fix",
-    "check": "npm run format && npm run lint",
-    "check:fix": "npm run format && npm run lint:fix",
+
+    "check": "npm run fmt:check && npm run lint:eslint && npm run lint:eslint:strict && npm run typecheck",
+    "check:fix": "npm run fmt:write && npm run lint:eslint && npm run lint:eslint:strict && npm run typecheck",
+
     "tscheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.node.json --noEmit",
     "precheck": "bash ./scripts/precheck.sh",
-    "prepare": "husky"
+    "prepare": "husky",
+
+    // ---- Unified commands (use these in CI and hooks) ----
+    "fmt:check": "prettier --config .prettierrc.yml --ignore-path .prettierignore --check .",
+    "fmt:write": "prettier --config .prettierrc.yml --ignore-path .prettierignore --write .",
+    "lint:eslint": "eslint src --ext .js,.jsx,.ts,.tsx --cache",
+    "lint:eslint:strict": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit --pretty false"
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.2",
