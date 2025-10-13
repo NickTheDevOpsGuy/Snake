@@ -9,7 +9,7 @@ A minimalist Snake clone built with React, TypeScript, and HTML Canvas — focus
 ![License](https://img.shields.io/github/license/NickTheDevOpsGuy/Snake)
 ![Last Commit](https://img.shields.io/github/last-commit/NickTheDevOpsGuy/Snake)
 ![Contributions welcome](https://img.shields.io/badge/Contributions-Welcome-brightgreen.svg)
-[![Play Now](https://img.shields.io/badge/▶%20Play%20Now-00C853?logo=github&logoColor=white)](https://nickthedevopsguy.github.io/Snake/)
+[![Play Now](https://img.shields.io/badge/%20Play%20Now-00C853?logo=github&logoColor=white)](https://nickthedevopsguy.github.io/Snake/)
 
 🧩 This project is part of my ongoing React fundamentals journey exploring how to handle real-time loops, keyboard input, and canvas drawing inside React without heavy frameworks.
 
