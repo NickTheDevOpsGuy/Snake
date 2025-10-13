@@ -19,11 +19,11 @@ A minimalist Snake clone built with React, TypeScript, and HTML Canvas — focus
 
 🎥 **Gameplay Sneak Peek**
 
-![Gameplay preview](./assets/snake-gameplay.gif)
+![Gameplay preview](./src/app/assets/snake-gameplay.gif)
 
 🔁 **Restart Animation**
 
-![Restart animation](./assets/snake-restart.gif)
+![Restart animation](./src/app/assets/snake-restart.gif)
 
 > Try it yourself — `npm run dev` then open [http://localhost:5173](http://localhost:5173)
 
