@@ -28,12 +28,13 @@ A minimalist Snake clone built with React, TypeScript, and HTML Canvas — focus
 
 ## Contributing
 
-We love contributions of all kinds! Whether it’s fixing a bug, suggesting a feature, or polishing docs, your help makes this game better.  
+We love contributions of all kinds! Whether it’s fixing a bug, suggesting a feature, or polishing docs, your help makes this game better.
 
-How to join in:  
-- Fork & open a PR 
+How to join in:
+
+- Fork & open a PR
 - Add yourself to [Contributors](./CONTRIBUTORS.md)
-- Share ideas in [roadmap discussions](https://github.com/users/NickTheDevOpsGuy/projects/5)  
+- Share ideas in [roadmap discussions](https://github.com/users/NickTheDevOpsGuy/projects/5)
 - Report bugs via [Issues](https://github.com/NickTheDevOpsGuy/Snake/issues)
 
 Every contribution, big or small, helps keep this project alive 🎉
@@ -43,9 +44,9 @@ Every contribution, big or small, helps keep this project alive 🎉
 ## Acknowledgements
 
 Minesweeper is a community project, shaped by everyone who’s played, tested, and contributed.  
-Every commit, idea, and bug report makes the game better.  
+Every commit, idea, and bug report makes the game better.
 
-[![Contributors](https://contrib.rocks/image?repo=NickTheDevOpsGuy/Snake)](./CONTRIBUTORS.md)  
+[![Contributors](https://contrib.rocks/image?repo=NickTheDevOpsGuy/Snake)](./CONTRIBUTORS.md)
 
 Meet all our amazing [Contributors](./CONTRIBUTORS.md)
 
@@ -128,7 +129,7 @@ git clone git@github.com:NickTheDevOpsGuy/Snake.git
 
 2. Install dependencies
 
-```bash 
+```bash
 npm install
 ```
 
@@ -150,10 +151,10 @@ npm test
 
 ## Tech Stack
 
-| Name                                                                  | Version | Description                                                 |
-| :-------------------------------------------------------------------- | :------ | :---------------------------------------------------------- |
-| [React](https://react.dev/)                                           | ^18.3.1 | UI library for building components.                         |
-| [Vite](https://vitejs.dev/)                                           | ^6.0.5  | Fast dev server & bundler.                                  |
+| Name                        | Version | Description                         |
+| :-------------------------- | :------ | :---------------------------------- |
+| [React](https://react.dev/) | ^18.3.1 | UI library for building components. |
+| [Vite](https://vitejs.dev/) | ^6.0.5  | Fast dev server & bundler.          |
 
 ---
 
@@ -161,20 +162,20 @@ npm test
 
 Run with `npm run <script>` (see package.json for full list).
 
-| Category       | Script        | Description                               |
-|----------------|---------------|-------------------------------------------|
-| **Dev**        | dev           | Start dev server                          |
-|                | build         | Type-check + production build             |
-|                | preview       | Preview production build                  |
-| **Test**       | test          | Run all tests once                        |
-|                | test:watch    | Run tests in watch mode                   |
-| **Deploy**     | predeploy     | Build before deploy                       |
-|                | deploy        | Publish to GitHub Pages                   |
-| **Lint/Format**| lint / lint:fix       | ESLint (JS/TS)                  |
-|                | lint:css / lint:css:fix | Stylelint (CSS/SCSS)          |
-|                | format / format:check | Prettier                           |
-| **Checks**     | check         | Run Prettier + ESLint                     |
-|                | check:fix     | Run Prettier + ESLint (auto-fix)          |
+| Category        | Script                  | Description                      |
+| --------------- | ----------------------- | -------------------------------- |
+| **Dev**         | dev                     | Start dev server                 |
+|                 | build                   | Type-check + production build    |
+|                 | preview                 | Preview production build         |
+| **Test**        | test                    | Run all tests once               |
+|                 | test:watch              | Run tests in watch mode          |
+| **Deploy**      | predeploy               | Build before deploy              |
+|                 | deploy                  | Publish to GitHub Pages          |
+| **Lint/Format** | lint / lint:fix         | ESLint (JS/TS)                   |
+|                 | lint:css / lint:css:fix | Stylelint (CSS/SCSS)             |
+|                 | format / format:check   | Prettier                         |
+| **Checks**      | check                   | Run Prettier + ESLint            |
+|                 | check:fix               | Run Prettier + ESLint (auto-fix) |
 
 ---
 
