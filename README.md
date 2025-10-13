@@ -74,7 +74,8 @@ Meet all our amazing [Contributors](./CONTRIBUTORS.md)
 ```plaintext
 .
 ├── .github
-│   └── snake-ci.yml
+│   └── workflows
+│       └── snake-ci.yml
 ├── .gitignore
 ├── .husky/
   ├── pre-commit
