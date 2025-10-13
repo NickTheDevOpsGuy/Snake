@@ -1,5 +1,5 @@
 // src/SnakeApp.tsx
-import React from "react";
+import React from 'react';
 import SnakeCanvas from './components/SnakeCanvas';
 import './styles/App.css';
 

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback } from 'react';
 
 const CELL = 24;
 const COLS = 20;
@@ -6,34 +6,34 @@ const ROWS = 20;
 const TICK_MS = 160;
 
 type XY = { x: number; y: number };
-type Dir = "up" | "down" | "left" | "right";
+type Dir = 'up' | 'down' | 'left' | 'right';
 const eq = (a: XY, b: XY) => a.x === b.x && a.y === b.y;
 
 const keyToDir: Record<string, Dir> = {
-  ArrowUp: "up",
-  ArrowDown: "down",
-  ArrowLeft: "left",
-  ArrowRight: "right",
+  ArrowUp: 'up',
+  ArrowDown: 'down',
+  ArrowLeft: 'left',
+  ArrowRight: 'right',
 };
 
 function isOpposite(a: Dir, b: Dir) {
   return (
-    (a === "up" && b === "down") ||
-    (a === "down" && b === "up") ||
-    (a === "left" && b === "right") ||
-    (a === "right" && b === "left")
+    (a === 'up' && b === 'down') ||
+    (a === 'down' && b === 'up') ||
+    (a === 'left' && b === 'right') ||
+    (a === 'right' && b === 'left')
   );
 }
 
 function nextHead(head: XY, dir: Dir): XY {
   switch (dir) {
-    case "up":
+    case 'up':
       return { x: head.x, y: head.y - 1 };
-    case "down":
+    case 'down':
       return { x: head.x, y: head.y + 1 };
-    case "left":
+    case 'left':
       return { x: head.x - 1, y: head.y };
-    case "right":
+    case 'right':
       return { x: head.x + 1, y: head.y };
   }
 }
@@ -62,7 +62,7 @@ export default function SnakeCanvas() {
   const [score, setScore] = useState(0);
   const [bump, setBump] = useState(false);
 
-  const dirRef = useRef<Dir>("right");
+  const dirRef = useRef<Dir>('right');
   const snakeRef = useRef<XY[]>([]);
 
   // bump animation trigger
@@ -72,12 +72,15 @@ export default function SnakeCanvas() {
     return () => clearTimeout(id);
   }, [score]);
 
-  const drawSnake = useCallback((ctx: CanvasRenderingContext2D, snake: XY[]) => {
-    ctx.fillStyle = "#22c55e";
-    for (const { x, y } of snake) {
-      ctx.fillRect(x * CELL, y * CELL, CELL, CELL);
-    }
-  }, []);
+  const drawSnake = useCallback(
+    (ctx: CanvasRenderingContext2D, snake: XY[]) => {
+      ctx.fillStyle = '#22c55e';
+      for (const { x, y } of snake) {
+        ctx.fillRect(x * CELL, y * CELL, CELL, CELL);
+      }
+    },
+    []
+  );
 
   const randomFreeCell = useCallback((snake: XY[]) => {
     while (true) {
@@ -96,16 +99,16 @@ export default function SnakeCanvas() {
     const W = COLS * CELL;
     const H = ROWS * CELL;
 
-    ctx.fillStyle = "#111";
+    ctx.fillStyle = '#111';
     ctx.fillRect(0, 0, W, H);
 
-    ctx.strokeStyle = "#666";
+    ctx.strokeStyle = '#666';
     ctx.lineWidth = 1.5;
     ctx.strokeRect(0, 0, W, H);
 
     ctx.save();
     ctx.globalAlpha = 0.8;
-    ctx.strokeStyle = "#000";
+    ctx.strokeStyle = '#000';
     ctx.lineWidth = 1;
     for (let i = 1; i < COLS; i++) {
       const x = i * CELL;
@@ -126,7 +129,7 @@ export default function SnakeCanvas() {
     const food = foodRef.current;
     if (food) {
       const { x, y } = food;
-      ctx.fillStyle = "#ef4444";
+      ctx.fillStyle = '#ef4444';
       ctx.fillRect(x * CELL, y * CELL, CELL, CELL);
     }
 
@@ -140,9 +143,9 @@ export default function SnakeCanvas() {
     ctx.globalAlpha = 0.3;
     ctx.fillRect(0, 0, COLS * CELL, ROWS * CELL);
     ctx.globalAlpha = 1;
-    ctx.fillStyle = "#fff";
-    ctx.font = "16px monospace";
-    ctx.fillText("Game Over — press Space", 12, 28);
+    ctx.fillStyle = '#fff';
+    ctx.font = '16px monospace';
+    ctx.fillText('Game Over — press Space', 12, 28);
     ctx.restore();
   }, []);
 
@@ -192,7 +195,7 @@ export default function SnakeCanvas() {
   const initGame = useCallback(() => {
     snakeRef.current = initSnake();
     foodRef.current = randomFreeCell(snakeRef.current);
-    dirRef.current = "right";
+    dirRef.current = 'right';
     aliveRef.current = true;
     setAlive(true);
     setScore(0);
@@ -201,7 +204,7 @@ export default function SnakeCanvas() {
 
   const onKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.code === "Space" && !aliveRef.current) {
+      if (e.code === 'Space' && !aliveRef.current) {
         initGame();
         startLoop();
         return;
@@ -219,24 +222,24 @@ export default function SnakeCanvas() {
 
   useEffect(() => {
     const c = canvasRef.current;
-    const ctx = c?.getContext("2d") ?? null;
+    const ctx = c?.getContext('2d') ?? null;
     ctxRef.current = ctx;
 
     initGame();
     startLoop();
 
-    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener('keydown', onKeyDown);
     return () => {
       stopLoop();
-      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener('keydown', onKeyDown);
     };
   }, [initGame, startLoop, stopLoop, onKeyDown]);
 
   return (
     <>
       <canvas ref={canvasRef} width={COLS * CELL} height={ROWS * CELL} />
-      <div className="mt-3 text-center font-mono text-lg text-gray-100">
-        <span className={bump ? "score-bump" : ""}>Score: {score}</span>
+      <div className='mt-3 text-center font-mono text-lg text-gray-100'>
+        <span className={bump ? 'score-bump' : ''}>Score: {score}</span>
       </div>
     </>
   );
