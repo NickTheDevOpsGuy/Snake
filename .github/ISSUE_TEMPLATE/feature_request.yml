@@ -10,20 +10,36 @@ body:
       placeholder: A clear, concise summary of the idea.
     validations:
       required: true
+
+  - type: dropdown
+    id: difficulty
+    attributes:
+      label: Difficulty
+      description: How challenging or time-consuming would this feature be to implement?
+      options:
+        - Easy 🟢 – small UI tweak or isolated addition
+        - Medium 🟡 – multi-file change or moderate logic update
+        - Hard 🔴 – large feature, architectural impact, or new subsystem
+    validations:
+      required: true
+
   - type: textarea
     id: proposal
     attributes:
       label: Proposed Solution
       placeholder: How would this work? Any rough UI/UX or API?
+
   - type: textarea
     id: screenshots
     attributes:
       label: Screenshots / Mockups (optional)
+
   - type: textarea
     id: context
     attributes:
       label: Additional Context
       placeholder: Related issues/PRs, links, tradeoffs.
+
   - type: checkboxes
     id: checklist
     attributes:
