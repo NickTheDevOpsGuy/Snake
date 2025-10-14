@@ -10,6 +10,19 @@ body:
       placeholder: What’s wrong? When did you notice it?
     validations:
       required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: How severe or complex is this bug?
+      options:
+        - Low 🟢 – minor visual or non-blocking issue
+        - Medium 🟡 – affects gameplay or one key feature
+        - High 🔴 – crashes, logic errors, or critical bugs
+    validations:
+      required: true
+
   - type: textarea
     id: steps
     attributes:
@@ -19,21 +32,25 @@ body:
         1. Step one
         2. Step two
         3. …
+
   - type: input
     id: expected
     attributes:
       label: Expected Behavior
       placeholder: What should happen?
+
   - type: input
     id: actual
     attributes:
       label: Actual Behavior
       placeholder: What happens instead?
+
   - type: textarea
     id: screenshots
     attributes:
       label: Screenshots / Logs
       description: Paste logs or drag images here.
+
   - type: textarea
     id: environment
     attributes:
@@ -46,10 +63,12 @@ body:
         | Browser     | Chrome 127 / Firefox 122      |
         | Device      | Desktop / iPhone 15           |
         | App Version | v1.2.3 or commit SHA          |
+
   - type: textarea
     id: context
     attributes:
       label: Additional Context
+
   - type: checkboxes
     id: checklist
     attributes:
