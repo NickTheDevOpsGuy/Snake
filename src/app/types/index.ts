@@ -1,6 +1,7 @@
 export * from './game';
 export * from './ui';
 export type XY = { x: number; y: number };
+export type Food = XY & { emoji?: string };
 export type Dir = 'up' | 'down' | 'left' | 'right';
 
 export const keyToDir: Record<string, Dir> = {
