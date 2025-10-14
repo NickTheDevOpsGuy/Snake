@@ -1,12 +1,12 @@
-import { useCallback, useRef, useState } from "react";
-import type { XY, Dir, Food } from "@/types";
+import { useCallback, useRef, useState } from 'react';
+import type { XY, Dir, Food } from '@/types';
 import {
   eq,
   nextHead,
   outOfBounds as oobDefault,
   initSnake,
-} from "@/utils/logic";
-import { FOOD_EMOJIS } from "@/constants/game";
+} from '@/utils/logic';
+import { FOOD_EMOJIS } from '@/constants/game';
 
 /**
  * Core game state + rules (no rendering).
@@ -18,9 +18,9 @@ export function useSnakeGame(
     onEat?: () => void;
     onDie?: () => void;
     isOutOfBounds?: (p: XY) => boolean; // overrides default bounds if provided
-  },
+  }
 ) {
-  const dirRef = useRef<Dir>("right");
+  const dirRef = useRef<Dir>('right');
   const nextDirRef = useRef<Dir | null>(null);
   const snakeRef = useRef<XY[]>(initSnake());
   const foodRef = useRef<Food | null>(null);
@@ -34,12 +34,12 @@ export function useSnakeGame(
       const emoji = FOOD_EMOJIS[Math.floor(Math.random() * FOOD_EMOJIS.length)];
       return { ...coords, emoji };
     },
-    [pickFreeCell],
+    [pickFreeCell]
   );
 
   const reset = useCallback(() => {
     snakeRef.current = initSnake();
-    dirRef.current = "right";
+    dirRef.current = 'right';
     nextDirRef.current = null;
     foodRef.current = spawnFood(snakeRef.current);
     setAlive(true);
