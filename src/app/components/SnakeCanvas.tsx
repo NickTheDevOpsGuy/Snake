@@ -1,5 +1,5 @@
 // src/app/components/SnakeCanvas.tsx
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   CELL,
   COLS,
@@ -7,17 +7,17 @@ import {
   TICK_START_MS,
   TICK_MIN_MS,
   TICK_STEP_MS,
-} from "@/constants/game";
-import type { XY, Dir } from "@/types";
-import { randomFreeCell, inferDirFromSnake } from "@/utils/logic";
-import { drawFrame } from "@/utils/canvas";
-import { useTicker } from "@/hooks/useTicker";
-import { useSnakeGame } from "@/hooks/useSnakeGame";
-import { useInput } from "@/hooks/useInput";
-import { useCanvas2D } from "@/hooks/useCanvas2D";
-import { useBestScore } from "@/hooks/useBestScore";
-import { usePauseHotkey } from "@/hooks/usePauseHotkey";
-import HUD from "@/components/HUD";
+} from '@/constants/game';
+import type { XY, Dir } from '@/types';
+import { randomFreeCell, inferDirFromSnake } from '@/utils/logic';
+import { drawFrame } from '@/utils/canvas';
+import { useTicker } from '@/hooks/useTicker';
+import { useSnakeGame } from '@/hooks/useSnakeGame';
+import { useInput } from '@/hooks/useInput';
+import { useCanvas2D } from '@/hooks/useCanvas2D';
+import { useBestScore } from '@/hooks/useBestScore';
+import { usePauseHotkey } from '@/hooks/usePauseHotkey';
+import HUD from '@/components/HUD';
 
 export default function SnakeCanvas() {
   const { canvasRef, ctxRef } = useCanvas2D();
@@ -26,9 +26,9 @@ export default function SnakeCanvas() {
   const [paused, setPaused] = useState(false);
 
   // 🔊 preload sounds
-  const eatSnd = useMemo(() => new Audio("/sounds/food.mp3"), []);
-  const dieSnd = useMemo(() => new Audio("/sounds/gameover.mp3"), []);
-  const keySnd = useMemo(() => new Audio("/sounds/move.mp3"), []);
+  const eatSnd = useMemo(() => new Audio('/sounds/food.mp3'), []);
+  const dieSnd = useMemo(() => new Audio('/sounds/gameover.mp3'), []);
+  const keySnd = useMemo(() => new Audio('/sounds/move.mp3'), []);
 
   useEffect(() => {
     eatSnd.volume = 0.7;
@@ -123,7 +123,7 @@ export default function SnakeCanvas() {
         onRestart={restartAndDraw}
       />
       {/* Optional debug display for speed */}
-      <div className="mt-1 text-center text-xs opacity-60 font-mono">
+      <div className='mt-1 text-center text-xs opacity-60 font-mono'>
         {(1000 / delayMs).toFixed(1)} moves/s
       </div>
     </>
