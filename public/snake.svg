@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+  width="256" height="256" viewBox="0 0 256 256"
+  xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Coiled Green Snake</title>
+  <desc id="desc">A stylized coiled snake with a gradient body, subtle scale pattern, glossy head, eye, and a red tongue.</desc>
+
+  <defs>
+    <!-- Body gradient -->
+    <linearGradient id="bodyGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"  stop-color="#2ecc71"/>
+      <stop offset="60%" stop-color="#27ae60"/>
+      <stop offset="100%" stop-color="#1e874b"/>
+    </linearGradient>
+
+    <!-- Shiny rim on head -->
+    <linearGradient id="headGloss" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="white" stop-opacity="0.65"/>
+      <stop offset="100%" stop-color="white" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Subtle shadow under body -->
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dy="2"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Scale pattern painted over the stroke using a pattern + mask -->
+    <pattern id="scales" patternUnits="userSpaceOnUse" width="12" height="8" patternTransform="rotate(15)">
+      <path d="M0,8 C3,2 9,2 12,8" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1.2" stroke-linecap="round"/>
+    </pattern>
+    <mask id="fadeScales">
+      <!-- fade scales toward the tail -->
+      <linearGradient id="scaleFade" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="white"/>
+        <stop offset="70%" stop-color="white"/>
+        <stop offset="100%" stop-color="black"/>
+      </linearGradient>
+      <rect x="0" y="0" width="256" height="256" fill="url(#scaleFade)"/>
+    </mask>
+  </defs>
+
+  <!-- Soft ground shadow -->
+  <ellipse cx="128" cy="204" rx="84" ry="20" fill="#000" opacity="0.15" filter="url(#softShadow)"/>
+
+  <!-- Coiled body path (one elegant s-curve coil ending at the head) -->
+  <!-- Tip: Adjust stroke-width for chunkier/thinner look -->
+  <path id="snakeBody"
+        d="
+          M 32,160
+          C 60,128 92,188 124,164
+          C 162,136 124,98 92,112
+          C 52,130 70,184 112,188
+          C 168,194 186,152 160,132
+          C 134,112 120,98 144,84
+          C 176,66 210,96 206,120
+          C 202,144 184,152 168,156
+          C 148,162 136,176 156,188
+          C 176,200 208,196 224,182"
+        fill="none"
+        stroke="url(#bodyGrad)"
+        stroke-width="22"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        filter="url(#softShadow)"/>
+
+  <!-- Scale overlay following the same path, painted with pattern -->
+  <path
+        d="
+          M 32,160
+          C 60,128 92,188 124,164
+          C 162,136 124,98 92,112
+          C 52,130 70,184 112,188
+          C 168,194 186,152 160,132
+          C 134,112 120,98 144,84
+          C 176,66 210,96 206,120
+          C 202,144 184,152 168,156
+          C 148,162 136,176 156,188
+          C 176,200 208,196 224,182"
+        fill="none"
+        stroke="url(#scales)"
+        stroke-width="22"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        mask="url(#fadeScales)"/>
+
+  <!-- Head (placed near the end of the body path) -->
+  <g transform="translate(222,180)">
+    <!-- Head base -->
+    <ellipse rx="18" ry="14" fill="url(#bodyGrad)" />
+    <!-- Gloss -->
+    <ellipse rx="14" ry="8" cy="-4" fill="url(#headGloss)"/>
+
+    <!-- Eye -->
+    <circle cx="-5" cy="-2" r="3.4" fill="#0b1a10"/>
+    <circle cx="-4.4" cy="-2.6" r="1.2" fill="white" opacity="0.85"/>
+
+    <!-- Nostril -->
+    <circle cx="2.5" cy="0.5" r="1.2" fill="#0b1a10" opacity="0.6"/>
+
+    <!-- Tongue (forked) -->
+    <path d="M 18,2
+             c 10,2 15,4 18,6
+             M 36,8 l 4,-3
+             M 36,8 l 4,3"
+          fill="none" stroke="#e74c3c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Tiny highlight speck on the body -->
+  <circle cx="150" cy="120" r="2.2" fill="white" opacity="0.6"/>
+</svg>

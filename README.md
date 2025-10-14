@@ -108,6 +108,8 @@ Meet all our amazing [Contributors](./CONTRIBUTORS.md)
 ├── index.html
 ├── package-lock.json
 ├── package.json
+├── public
+│   └── snake.svg
 ├── README.md
 ├── scripts
 │   └── precheck.sh
