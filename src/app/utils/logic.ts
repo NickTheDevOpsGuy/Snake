@@ -1,4 +1,4 @@
-import { COLS, ROWS } from '@/constants/game';
+// src/app/utils/logic.ts
 import type { XY, Dir } from '@/types';
 
 export const eq = (a: XY, b: XY) => a.x === b.x && a.y === b.y;
@@ -18,11 +18,19 @@ export const nextHead = (h: XY, d: Dir): XY =>
         ? { x: h.x - 1, y: h.y }
         : { x: h.x + 1, y: h.y };
 
-export const outOfBounds = (p: XY) =>
-  p.x < 0 || p.x >= COLS || p.y < 0 || p.y >= ROWS;
+/**
+ * Bounds check. Defaults to a 20x20 board if cols/rows are not provided,
+ * so existing call sites (outOfBounds(p)) keep working.
+ */
+export const outOfBounds = (p: XY, cols = 20, rows = 20) =>
+  p.x < 0 || p.x >= cols || p.y < 0 || p.y >= rows;
 
-export const initSnake = (): XY[] => {
-  const row = Math.floor(ROWS / 2);
+/**
+ * Initial snake centered on the given number of rows.
+ * Defaults to 20 so initSnake() keeps working if caller doesn't pass rows.
+ */
+export const initSnake = (rows = 20): XY[] => {
+  const row = Math.floor(rows / 2);
   return [
     { x: 2, y: row },
     { x: 1, y: row },
@@ -38,7 +46,7 @@ export function randomFreeCell(snake: XY[], cols: number, rows: number): XY {
   }
 }
 
-/** Infer current direction from head→second segment (used for opposite-turn guard). */
+/** Infer current direction from head→second segment. */
 export function inferDirFromSnake(snake: XY[]): Dir {
   const [h, s] = snake;
   if (!s) return 'right';

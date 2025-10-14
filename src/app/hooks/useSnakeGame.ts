@@ -1,17 +1,23 @@
 import { useCallback, useRef, useState } from 'react';
 import type { XY, Dir, Food } from '@/types';
-import { eq, nextHead, outOfBounds, initSnake } from '@/utils/logic';
+import {
+  eq,
+  nextHead,
+  outOfBounds as oobDefault,
+  initSnake,
+} from '@/utils/logic';
 import { FOOD_EMOJIS } from '@/constants/game';
 
 /**
  * Core game state + rules (no rendering).
- * Accepts callbacks for events like eating or dying.
+ * Accepts callbacks for events like eating or dying, and an optional bounds override.
  */
 export function useSnakeGame(
   pickFreeCell: (snake: XY[]) => XY,
   opts?: {
-    onEat?: () => void; // play sound when food eaten
-    onDie?: () => void; // play sound when player dies
+    onEat?: () => void;
+    onDie?: () => void;
+    isOutOfBounds?: (p: XY) => boolean; // overrides default bounds if provided
   }
 ) {
   const dirRef = useRef<Dir>('right');
@@ -61,14 +67,13 @@ export function useSnakeGame(
     const willEat = !!food && eq(nh, food);
     const bodyToCheck = willEat ? snake : snake.slice(0, -1);
 
-    // death check
-    if (outOfBounds(nh) || bodyToCheck.some((s) => eq(s, nh))) {
+    const isOOB = opts?.isOutOfBounds ?? oobDefault;
+    if (isOOB(nh) || bodyToCheck.some((s) => eq(s, nh))) {
       setAlive(false);
       opts?.onDie?.();
       return;
     }
 
-    // eat or move
     if (willEat) {
       snake.unshift(nh);
       setScore((s) => s + 1);
@@ -80,13 +85,5 @@ export function useSnakeGame(
     }
   }, [opts, spawnFood]);
 
-  return {
-    alive,
-    score,
-    snakeRef,
-    foodRef,
-    reset,
-    turn,
-    tick,
-  };
+  return { alive, score, snakeRef, foodRef, reset, turn, tick };
 }

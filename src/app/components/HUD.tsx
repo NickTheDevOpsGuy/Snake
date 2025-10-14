@@ -16,7 +16,7 @@ export default function HUD({ score, best, bump, alive, onRestart }: Props) {
 
       {!alive && (
         <div className='mt-2'>
-          <button onClick={onRestart} className='px-3 py-1 border rounded'>
+          <button onClick={onRestart} className='rounded border px-3 py-1'>
             Restart (Space)
           </button>
         </div>

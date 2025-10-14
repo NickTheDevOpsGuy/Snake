@@ -28,10 +28,10 @@
 /* ——— Optional extras ——— */
 /* Slight body padding + dark background (helps with layout) */
 body {
-  @apply bg-black text-white font-mono;
+  @apply bg-black font-mono text-white;
 }
 
 /* Center canvas nicely when needed */
 canvas {
-  @apply block mx-auto rounded;
+  @apply mx-auto block rounded;
 }
