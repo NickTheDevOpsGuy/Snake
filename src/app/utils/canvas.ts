@@ -1,5 +1,5 @@
 import { CELL, COLS, ROWS } from '@/constants/game';
-import type { XY } from '@/types';
+import type { XY, Food } from '@/types';
 
 export function drawGrid(ctx: CanvasRenderingContext2D) {
   const W = COLS * CELL,
@@ -32,8 +32,20 @@ export function drawGrid(ctx: CanvasRenderingContext2D) {
   ctx.restore();
 }
 
-export function drawFood(ctx: CanvasRenderingContext2D, f: XY | null) {
+export function drawFood(ctx: CanvasRenderingContext2D, f: Food | null) {
   if (!f) return;
+
+  if (f.emoji) {
+    ctx.save();
+    ctx.font = `${Math.floor(CELL * 0.8)}px system-ui, -apple-system, Segoe UI, Roboto, Emoji, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(f.emoji, f.x * CELL + CELL / 2, f.y * CELL + CELL / 2);
+    ctx.restore();
+    return;
+  }
+
+  // fallback: red square (in case no emoji assigned)
   ctx.fillStyle = '#ef4444';
   ctx.fillRect(f.x * CELL, f.y * CELL, CELL, CELL);
 }
@@ -59,7 +71,7 @@ export function drawGameOver(ctx: CanvasRenderingContext2D) {
 export function drawFrame(
   ctx: CanvasRenderingContext2D,
   alive: boolean,
-  food: XY | null,
+  food: Food | null,
   snake: XY[]
 ) {
   drawGrid(ctx);

@@ -1,6 +1,7 @@
-import { useCallback, useRef, useState } from "react";
-import type { XY, Dir } from "@/types";
-import { eq, nextHead, outOfBounds, initSnake } from "@/utils/logic";
+import { useCallback, useRef, useState } from 'react';
+import type { XY, Dir, Food } from '@/types';
+import { eq, nextHead, outOfBounds, initSnake } from '@/utils/logic';
+import { FOOD_EMOJIS } from '@/constants/game';
 
 /**
  * Core game state + rules (no rendering).
@@ -9,26 +10,35 @@ import { eq, nextHead, outOfBounds, initSnake } from "@/utils/logic";
 export function useSnakeGame(
   pickFreeCell: (snake: XY[]) => XY,
   opts?: {
-    onEat?: () => void;  // play sound when food eaten
-    onDie?: () => void;  // play sound when player dies
+    onEat?: () => void; // play sound when food eaten
+    onDie?: () => void; // play sound when player dies
   }
 ) {
-  const dirRef = useRef<Dir>("right");
+  const dirRef = useRef<Dir>('right');
   const nextDirRef = useRef<Dir | null>(null);
   const snakeRef = useRef<XY[]>(initSnake());
-  const foodRef = useRef<XY | null>(null);
+  const foodRef = useRef<Food | null>(null);
 
   const [alive, setAlive] = useState(true);
   const [score, setScore] = useState(0);
 
+  const spawnFood = useCallback(
+    (snake: XY[]): Food => {
+      const coords = pickFreeCell(snake);
+      const emoji = FOOD_EMOJIS[Math.floor(Math.random() * FOOD_EMOJIS.length)];
+      return { ...coords, emoji };
+    },
+    [pickFreeCell]
+  );
+
   const reset = useCallback(() => {
     snakeRef.current = initSnake();
-    dirRef.current = "right";
+    dirRef.current = 'right';
     nextDirRef.current = null;
-    foodRef.current = pickFreeCell(snakeRef.current);
+    foodRef.current = spawnFood(snakeRef.current);
     setAlive(true);
     setScore(0);
-  }, [pickFreeCell]);
+  }, [spawnFood]);
 
   /** Queue a direction; consumed once per tick */
   const turn = useCallback((d: Dir) => {
@@ -62,13 +72,13 @@ export function useSnakeGame(
     if (willEat) {
       snake.unshift(nh);
       setScore((s) => s + 1);
-      foodRef.current = pickFreeCell(snake);
+      foodRef.current = spawnFood(snake);
       opts?.onEat?.();
     } else {
       snake.unshift(nh);
       snake.pop();
     }
-  }, [pickFreeCell, opts]);
+  }, [opts, spawnFood]);
 
   return {
     alive,
