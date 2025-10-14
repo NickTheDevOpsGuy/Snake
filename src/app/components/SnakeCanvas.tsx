@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+// src/app/components/SnakeCanvas.tsx
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { CELL, COLS, ROWS, TICK_MS } from '@/constants/game';
-import { type XY, type Dir } from '@/types';
+import type { XY, Dir } from '@/types';
 import { randomFreeCell, inferDirFromSnake } from '@/utils/logic';
 import { drawFrame } from '@/utils/canvas';
 import { useTicker } from '@/hooks/useTicker';
@@ -17,22 +18,47 @@ export default function SnakeCanvas() {
   const [bump, setBump] = useState(false);
   const [paused, setPaused] = useState(false);
 
-  // hook expects (snake) => XY; adapt our util (needs cols/rows)
+  // 🔊 preload audio once
+  const eatSnd = useMemo(() => new Audio('/sounds/food.mp3'), []);
+  const dieSnd = useMemo(() => new Audio('/sounds/gameover.mp3'), []);
+  const keySnd = useMemo(() => new Audio('/sounds/move.mp3'), []);
+
+  // optional volumes
+  useEffect(() => {
+    eatSnd.volume = 0.7;
+    dieSnd.volume = 0.9;
+    keySnd.volume = 0.4; // subtle tap
+  }, [eatSnd, dieSnd, keySnd]);
+
+  // helper: replay quickly without getting stuck
+  const play = useCallback((a: HTMLAudioElement) => {
+    try {
+      a.currentTime = 0;
+      void a.play();
+    } catch {}
+  }, []);
+
+  // adapt util (needs cols/rows) to hook signature (snake) => XY
   const pickCell = useCallback(
     (snake: XY[]) => randomFreeCell(snake, COLS, ROWS),
     []
   );
 
-  const { alive, score, snakeRef, foodRef, reset, turn, tick } =
-    useSnakeGame(pickCell);
+  const { alive, score, snakeRef, foodRef, reset, turn, tick } = useSnakeGame(
+    pickCell,
+    {
+      onEat: () => play(eatSnd),
+      onDie: () => play(dieSnd),
+    }
+  );
 
-  // derive current dir from snake (for opposite-turn guard)
-  const getCurrentDir = useCallback(
-    (): Dir => inferDirFromSnake(snakeRef.current),
+  // current direction (for opposite-turn guard)
+  const getCurrentDir = useCallback<() => Dir>(
+    () => inferDirFromSnake(snakeRef.current),
     [snakeRef]
   );
 
-  // drawing (refs don't change, so only depend on 'alive')
+  // draw one frame
   const draw = useCallback(() => {
     const ctx = ctxRef.current;
     if (!ctx) return;
@@ -49,7 +75,7 @@ export default function SnakeCanvas() {
   // best score persistence
   const best = useBestScore(score);
 
-  // mount-only: first reset + first draw
+  // mount-only: reset once and draw
   useEffect(() => {
     reset();
     draw();
@@ -68,17 +94,19 @@ export default function SnakeCanvas() {
     true
   );
 
-  // keyboard input (arrows + Space restart)
+  // restart helper
   const restartAndDraw = useCallback(() => {
     reset();
     draw();
   }, [reset, draw]);
 
+  // keyboard input (arrows + Space) + keypress sound
   useInput({
     alive,
     getCurrentDir,
     onTurn: turn,
     onRestart: restartAndDraw,
+    onMoveKey: () => play(keySnd), // 🔊 plays once per valid arrow press
   });
 
   // "P" to pause/resume when alive
