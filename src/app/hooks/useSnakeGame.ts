@@ -1,15 +1,20 @@
-import { useCallback, useRef, useState } from 'react';
-import type { XY, Dir } from '@/types';
-import { eq, nextHead, outOfBounds, initSnake } from '@/utils/logic';
-import { COLS, ROWS } from '@/constants/game';
+import { useCallback, useRef, useState } from "react";
+import type { XY, Dir } from "@/types";
+import { eq, nextHead, outOfBounds, initSnake } from "@/utils/logic";
 
 /**
- * Game state + rules (no rendering).
- * Accepts a cell picker so you can swap randomness later (tests/determinism).
+ * Core game state + rules (no rendering).
+ * Accepts callbacks for events like eating or dying.
  */
-export function useSnakeGame(pickFreeCell: (snake: XY[]) => XY) {
-  const dirRef = useRef<Dir>('right');
-  const nextDirRef = useRef<Dir | null>(null); // queue one turn per tick
+export function useSnakeGame(
+  pickFreeCell: (snake: XY[]) => XY,
+  opts?: {
+    onEat?: () => void;  // play sound when food eaten
+    onDie?: () => void;  // play sound when player dies
+  }
+) {
+  const dirRef = useRef<Dir>("right");
+  const nextDirRef = useRef<Dir | null>(null);
   const snakeRef = useRef<XY[]>(initSnake());
   const foodRef = useRef<XY | null>(null);
 
@@ -18,20 +23,20 @@ export function useSnakeGame(pickFreeCell: (snake: XY[]) => XY) {
 
   const reset = useCallback(() => {
     snakeRef.current = initSnake();
-    dirRef.current = 'right';
+    dirRef.current = "right";
     nextDirRef.current = null;
     foodRef.current = pickFreeCell(snakeRef.current);
     setAlive(true);
     setScore(0);
   }, [pickFreeCell]);
 
-  /** Queue a direction; consumed on the next tick. */
+  /** Queue a direction; consumed once per tick */
   const turn = useCallback((d: Dir) => {
     nextDirRef.current = d;
   }, []);
 
   const tick = useCallback(() => {
-    // apply queued direction once per tick
+    // apply queued turn
     if (nextDirRef.current) {
       dirRef.current = nextDirRef.current;
       nextDirRef.current = null;
@@ -46,30 +51,30 @@ export function useSnakeGame(pickFreeCell: (snake: XY[]) => XY) {
     const willEat = !!food && eq(nh, food);
     const bodyToCheck = willEat ? snake : snake.slice(0, -1);
 
+    // death check
     if (outOfBounds(nh) || bodyToCheck.some((s) => eq(s, nh))) {
       setAlive(false);
+      opts?.onDie?.();
       return;
     }
 
+    // eat or move
     if (willEat) {
       snake.unshift(nh);
       setScore((s) => s + 1);
       foodRef.current = pickFreeCell(snake);
+      opts?.onEat?.();
     } else {
       snake.unshift(nh);
       snake.pop();
     }
-  }, [pickFreeCell]);
-
-  // initial food if needed (call reset() from component on mount)
+  }, [pickFreeCell, opts]);
 
   return {
-    // state
     alive,
     score,
     snakeRef,
     foodRef,
-    // controls
     reset,
     turn,
     tick,
