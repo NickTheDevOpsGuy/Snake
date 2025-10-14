@@ -2,8 +2,9 @@
 name: 🐍 Snake — CI (Prettier · ESLint · TSC)
 
 on:
-  push:
   pull_request:
+    branches:
+      - develop
 
 concurrency:
   group: snake-${{ github.ref }}
