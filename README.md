@@ -24,13 +24,24 @@ A minimalist Snake clone built with React, TypeScript, and HTML Canvas — focus
 
 ## 🎯 Features
 
-- ⚡ Smooth Canvas Rendering — real-time updates without unnecessary re-renders
-- 🎮 Arrow Key Controls — responsive, with spacebar restart
-- 🍎 Dynamic Food Spawning — random positions, never overlaps the snake
-- 💥 Collision Detection — walls and self-collision instantly end the game
-- 🔁 Clean Restart Logic — quick replay loop with instant feedback
-- 💫 Animated Score Pop — subtle CSS bump when you eat food
-- 🌑 Dark Grid Aesthetic — modern look with subtle borders and Tailwind styling
+### 🧠 Core Gameplay
+- ⚡ **Smooth Canvas Rendering** — real-time updates without unnecessary re-renders  
+- 🎮 **Arrow Key Controls** — responsive movement with spacebar restart  
+- 🍎 **Dynamic Food Spawning** — random positions, never overlaps the snake  
+- 💥 **Collision Detection** — walls and self-collision instantly end the game  
+- 🔁 **Clean Restart Logic** — quick replay loop with instant feedback  
+- 💫 **Animated Score Pop** — subtle CSS bump when you eat food  
+- 🌑 **Dark Grid Aesthetic** — modern look with subtle borders and Tailwind styling  
+
+### 🚀 Enhanced Features
+- 🔊 **Sound Effects** — satisfying audio feedback for moves, food, and game-over  
+- 🧩 **Difficulty Presets** — easy, medium, and hard options that scale board size and speed  
+- 🥕 **Emoji Food Items** — random fruits and veggies add playful variety  
+- 💾 **Persistent Best Score** — keeps your top score across sessions  
+- ⏸️ **Pause / Resume Hotkey** — toggle with the `P` key  
+- 🧱 **Dynamic Speed Scaling** — snake speeds up as you grow  
+- 🧭 **Modular Hook Architecture** — reusable logic with `useSnakeGame`, `useTicker`, and friends  
+- ⚙️ **Strict TypeScript + ESLint** — clean, type-safe codebase with zero warnings  
 
 ---
 
