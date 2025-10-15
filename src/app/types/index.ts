@@ -1,8 +1,8 @@
 // src/app/types/index.ts
 
 // Re-export from sibling type modules
-export * from './game';
-export * from './ui';
+export * from "./game";
+export * from "./ui";
 
 // ——— Core shared types ———
 
@@ -13,14 +13,14 @@ export type XY = { x: number; y: number };
 export type Food = XY & { emoji?: string };
 
 // Snake movement direction
-export type Dir = 'up' | 'down' | 'left' | 'right';
+export type Dir = "up" | "down" | "left" | "right";
 
 // Keyboard direction mapping
 export const keyToDir: Record<string, Dir> = {
-  ArrowUp: 'up',
-  ArrowDown: 'down',
-  ArrowLeft: 'left',
-  ArrowRight: 'right',
+  ArrowUp: "up",
+  ArrowDown: "down",
+  ArrowLeft: "left",
+  ArrowRight: "right",
 };
 
 // Equality helper for comparing coordinates
