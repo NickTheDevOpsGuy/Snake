@@ -39,7 +39,10 @@ export default function SnakeCanvas() {
     try {
       a.currentTime = 0;
       void a.play();
-    } catch {}
+    } catch {
+      // Swallow autoplay/gesture-blocked play errors intentionally
+      void 0;
+    }
   }, []);
 
   // random free cell based on current tuning
