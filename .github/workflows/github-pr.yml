@@ -1,4 +1,4 @@
-name: PR → Discord
+name: PR to Discord
 
 on:
   pull_request:
