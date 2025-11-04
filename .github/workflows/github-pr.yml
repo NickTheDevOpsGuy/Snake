@@ -32,7 +32,6 @@ jobs:
           BASE: ${{ github.event.pull_request.base.ref }}
           HEAD: ${{ github.event.pull_request.head.ref }}
         run: |
-          set -euo pipefail
 
           # Simple JSON escaper for Bash (handles \, ", and newlines)
           esc() {
