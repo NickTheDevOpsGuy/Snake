@@ -48,7 +48,8 @@ jobs:
           BASE_ESC=$(esc "${BASE:-}")
           HEAD_ESC=$(esc "${HEAD:-}")
 
-          read -r -d '' payload <<EOF
+          # Build JSON payload safely using cat (avoids exit 1 under set -e)
+          payload=$(cat <<EOF
           {
             "username": "GitHub PR Bot",
             "embeds": [
@@ -63,6 +64,7 @@ jobs:
             ]
           }
           EOF
+          )
 
           # Post to Discord and require 204 No Content
           http_code=$(curl -sS -o /dev/null -w "%{http_code}" \
