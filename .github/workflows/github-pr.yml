@@ -1,14 +1,16 @@
 name: PR → Discord
+
 on:
   pull_request:
     types: [opened, reopened, ready_for_review]
+
 permissions:
   contents: read
   pull-requests: read
 
 jobs:
   notify:
-    # Block untrusted forks from using secrets:
+    # Block untrusted forks from using secrets
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
     steps:
@@ -32,7 +34,7 @@ jobs:
               url:$url,
               description:("by @" + $user),
               fields:[
-                {name:"Branch", value: $head + " → " + $base, inline:true}
+                {name:"Branch", value: ($head + " -> " + $base), inline:true}
               ]
             }]})
           curl -sS -X POST -H "Content-Type: application/json" \
