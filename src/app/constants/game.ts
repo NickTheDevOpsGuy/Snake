@@ -1,6 +1,6 @@
 // Game-wide configuration and presets
 
-export type GameDifficulty = "easy" | "medium" | "hard";
+export type GameDifficulty = 'easy' | 'medium' | 'hard';
 
 export type GameTuning = {
   CELL: number;
@@ -40,4 +40,4 @@ export const DIFFICULTY_PRESETS: Record<GameDifficulty, GameTuning> = {
 };
 
 // Emoji pool for food
-export const FOOD_EMOJIS = ["🍎", "🍌", "🍇", "🧀", "🍉", "🍓", "🥕", "🌽"];
+export const FOOD_EMOJIS = ['🍎', '🍌', '🍇', '🧀', '🍉', '🍓', '🥕', '🌽'];
