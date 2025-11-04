@@ -14,6 +14,22 @@ jobs:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
     steps:
+      - name: Ensure jq is available
+        run: |
+          if ! command -v jq >/dev/null 2>&1; then
+            sudo apt-get update -y
+            sudo apt-get install -y jq
+          fi
+
+      - name: Check for Discord webhook secret
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          if [ -z "${DISCORD_WEBHOOK:-}" ]; then
+            echo "::notice::DISCORD_WEBHOOK secret is not set or unavailable to this run. Skipping notification."
+            exit 0
+          fi
+
       - name: Send embed to Discord
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
@@ -23,19 +39,33 @@ jobs:
           BASE: ${{ github.event.pull_request.base.ref }}
           HEAD: ${{ github.event.pull_request.head.ref }}
         run: |
+          set -euo pipefail
           payload=$(jq -n \
             --arg title "$TITLE" \
             --arg url "$URL" \
             --arg user "$USER" \
             --arg base "$BASE" \
             --arg head "$HEAD" \
-            '{embeds:[{
-              title:$title,
-              url:$url,
-              description:("by @" + $user),
-              fields:[
-                {name:"Branch", value: ($head + " -> " + $base), inline:true}
+            '{
+              username: "GitHub PR Bot",
+              embeds: [
+                {
+                  title: $title,
+                  url: $url,
+                  description: ("by @" + $user),
+                  fields: [
+                    { name: "Branch", value: ($head + " -> " + $base), inline: true }
+                  ]
+                }
               ]
-            }]})
-          curl -sS -X POST -H "Content-Type: application/json" \
-               -d "$payload" "$DISCORD_WEBHOOK"
+            }')
+
+          # Post to Discord and ensure we get 204 No Content (success)
+          http_code=$(curl -sS -o /dev/null -w "%{http_code}" \
+            -X POST -H "Content-Type: application/json" \
+            -d "$payload" "$DISCORD_WEBHOOK")
+
+          if [ "$http_code" -ne 204 ]; then
+            echo "::error::Discord responded with HTTP $http_code";
+            exit 1;
+          fi
