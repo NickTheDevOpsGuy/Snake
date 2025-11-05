@@ -220,6 +220,10 @@ Run with `npm run <script>` (see package.json for full list).
 
 ---
 
-🦝 Author
+## 🦝 Built by NickDoesDevOps
 
-Made with ☕ & curiosity by [Nick Clark](https://github.com/NickTheDevOpsGuy) — #NickDoesDevOps 🦝
+Created with ☕, curiosity, and a bit of chaos by [**Nicholas Clark**](https://www.linkedin.com/in/nickdoesdevops).  
+Follow my learning-in-public journey:  
+**GitHub:** [@NickTheDevOpsGuy](https://github.com/NickTheDevOpsGuy) • **LinkedIn:** [@NickDoesDevOps](https://www.linkedin.com/in/nickdoesdevops)
+
+🏷 `#NickDoesDevOps` `#LearningInPublic` `#BuiltInPublic`
