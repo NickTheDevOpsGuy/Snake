@@ -40,7 +40,7 @@ export default function SnakeCanvas() {
       a.currentTime = 0;
       void a.play();
     } catch {
-      console.error("Audio play exception:", err);
+      console.error('Audio play exception:', err);
     }
   }, []);
 
