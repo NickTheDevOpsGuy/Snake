@@ -39,7 +39,9 @@ export default function SnakeCanvas() {
     try {
       a.currentTime = 0;
       void a.play();
-    } catch {}
+    } catch {
+      console.error('Audio play exception:', err);
+    }
   }, []);
 
   // random free cell based on current tuning
