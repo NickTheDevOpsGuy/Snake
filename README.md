@@ -20,7 +20,13 @@ A minimalist Snake clone built with React, TypeScript, and HTML Canvas — focus
 
 ![Gameplay preview](./src/app/assets/snake-gameplay.gif)
 
-> Try it yourself — `npm run dev` then open [http://localhost:5173](http://localhost:5173)
+---
+
+🌐 Live Demo
+
+Try Snake here: https://snake-beryl-six.vercel.app/
+
+---
 
 ## 🎯 Features
 
