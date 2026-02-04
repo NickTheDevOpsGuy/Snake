@@ -26,12 +26,18 @@
 }
 
 /* ——— Optional extras ——— */
-/* Slight body padding + dark background (helps with layout) */
 body {
   @apply bg-black font-mono text-white;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
-/* Center canvas nicely when needed */
 canvas {
   @apply mx-auto block rounded;
+}
+
+/* Prevent pull-to-refresh and overscroll on mobile */
+html,
+body {
+  overscroll-behavior: none;
 }

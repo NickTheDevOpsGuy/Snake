@@ -53,6 +53,18 @@ Try Snake here: https://snake-beryl-six.vercel.app/
 
 ---
 
+## 🏆 Supabase Leaderboard (Optional)
+
+To enable the global leaderboard:
+
+1. Create a [Supabase](https://supabase.com) project
+2. Run the migration in `supabase/migrations/001_snake_scores.sql` in the SQL Editor
+3. Copy `.env.example` to `.env.local` and add your `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`
+
+Without Supabase, the game still works with local-only score storage.
+
+---
+
 ## Contributing
 
 We love contributions of all kinds! Whether it’s fixing a bug, suggesting a feature, or polishing docs, your help makes this game better.
@@ -124,18 +136,28 @@ Meet all our amazing [Contributors](./CONTRIBUTORS.md)
 │       ├── assets
 │       │   └── snake-gameplay.gif
 │       ├── components
-│       │   ├── Board.tsx
+│       │   ├── CountdownOverlay.tsx
+│       │   ├── GameOverOverlay.tsx
 │       │   ├── HUD.tsx
+│       │   ├── HowToPlayModal.tsx
+│       │   ├── LeaderboardModal.tsx
+│       │   ├── MenuScreen.tsx
+│       │   ├── MobileControls.tsx
+│       │   ├── SettingsModal.tsx
 │       │   └── SnakeCanvas.tsx
 │       ├── constants
 │       │   └── game.ts
 │       ├── hooks
 │       │   ├── useBestScore.ts
 │       │   ├── useCanvas2D.ts
+│       │   ├── useGameScale.ts
+│       │   ├── useGameSetup.ts
 │       │   ├── useInput.ts
+│       │   ├── useLeaderboard.ts
 │       │   ├── usePauseHotkey.ts
-│       │   ├── useSnake.ts
+│       │   ├── useSettings.ts
 │       │   ├── useSnakeGame.ts
+│       │   ├── useSwipe.ts
 │       │   └── useTicker.ts
 │       ├── main.tsx
 │       ├── styles
@@ -144,9 +166,15 @@ Meet all our amazing [Contributors](./CONTRIBUTORS.md)
 │       │   ├── game.ts
 │       │   ├── index.ts
 │       │   └── ui.ts
+│       ├── services
+│       │   └── leaderboardService.ts
+│       ├── supabase
+│       │   └── client.ts
 │       └── utils
 │           ├── canvas.ts
-│           └── logic.ts
+│           ├── gameTick.ts
+│           ├── logic.ts
+│           └── speed.ts
 ├── tsconfig.json
 ├── tsconfig.node.json
 └── vite.config.ts

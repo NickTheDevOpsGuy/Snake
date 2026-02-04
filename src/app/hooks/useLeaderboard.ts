@@ -1,7 +1,9 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { GameDifficulty } from '@/constants/game';
+import { submitScore as submitToSupabase } from '@/services/leaderboardService';
+import { isSupabaseConfigured } from '@/supabase/client';
 
-export type LeaderboardEntry = {
+export type LocalLeaderboardEntry = {
   score: number;
   difficulty: GameDifficulty;
   date: number;
@@ -10,18 +12,18 @@ export type LeaderboardEntry = {
 const STORAGE_KEY = 'snake-leaderboard';
 const MAX_ENTRIES = 10;
 
-function loadLeaderboard(): LeaderboardEntry[] {
+function loadLocalLeaderboard(): LocalLeaderboardEntry[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
-    const parsed = JSON.parse(raw) as LeaderboardEntry[];
+    const parsed = JSON.parse(raw) as LocalLeaderboardEntry[];
     return Array.isArray(parsed) ? parsed : [];
   } catch {
     return [];
   }
 }
 
-function saveLeaderboard(entries: LeaderboardEntry[]) {
+function saveLocalLeaderboard(entries: LocalLeaderboardEntry[]) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
   } catch {
@@ -30,21 +32,25 @@ function saveLeaderboard(entries: LeaderboardEntry[]) {
 }
 
 export function useLeaderboard() {
-  const [entries, setEntries] = useState<LeaderboardEntry[]>(loadLeaderboard);
+  const [localEntries, setLocalEntries] =
+    useState<LocalLeaderboardEntry[]>(loadLocalLeaderboard);
 
   const submitScore = useCallback(
-    (score: number, difficulty: GameDifficulty) => {
-      const next: LeaderboardEntry[] = [
-        ...entries,
+    (score: number, difficulty: GameDifficulty, playerName?: string) => {
+      if (isSupabaseConfigured()) {
+        void submitToSupabase(score, difficulty, playerName);
+      }
+      const next: LocalLeaderboardEntry[] = [
+        ...localEntries,
         { score, difficulty, date: Date.now() },
       ]
         .sort((a, b) => b.score - a.score)
         .slice(0, MAX_ENTRIES);
-      setEntries(next);
-      saveLeaderboard(next);
+      setLocalEntries(next);
+      saveLocalLeaderboard(next);
     },
-    [entries]
+    [localEntries]
   );
 
-  return { entries, submitScore };
+  return { localEntries, submitScore };
 }

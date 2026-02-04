@@ -30,8 +30,10 @@
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.2",
+    "@supabase/supabase-js": "^2.94.1",
     "canvas-confetti": "^1.9.3",
     "husky": "^9.1.7",
+    "lucide-react": "^0.563.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
