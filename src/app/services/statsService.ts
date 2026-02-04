@@ -1,7 +1,7 @@
-import type { GameDifficulty } from "@/constants/game";
+import type { GameDifficulty } from '@/constants/game';
 
-const STATS_KEY = "snake-stats";
-const ACHIEVEMENTS_KEY = "snake-achievements";
+const STATS_KEY = 'snake-stats';
+const ACHIEVEMENTS_KEY = 'snake-achievements';
 
 export type GameStats = {
   totalGames: number;
@@ -33,7 +33,10 @@ function loadStats(): GameStats {
     return {
       ...DEFAULT_STATS,
       ...parsed,
-      bestPerDifficulty: { ...DEFAULT_STATS.bestPerDifficulty, ...parsed.bestPerDifficulty },
+      bestPerDifficulty: {
+        ...DEFAULT_STATS.bestPerDifficulty,
+        ...parsed.bestPerDifficulty,
+      },
     };
   } catch {
     return { ...DEFAULT_STATS };
@@ -57,7 +60,7 @@ export function recordGame(
   difficulty: GameDifficulty,
   foodEaten: number,
   ghostUsed: number,
-  freezeUsed: number,
+  freezeUsed: number
 ) {
   const stats = loadStats();
   stats.totalGames += 1;
