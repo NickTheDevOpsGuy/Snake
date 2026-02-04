@@ -3,6 +3,7 @@ type Props = {
   best: number;
   bump: boolean;
   alive: boolean;
+  paused?: boolean;
   onRestart: () => void;
 };
 
