@@ -1,58 +1,88 @@
 import { useCallback, useRef, useState } from 'react';
-import type { XY, Dir, Food } from '@/types';
+import type { XY, Dir, Food, FoodKind } from '@/types';
 import {
   eq,
   nextHead,
-  outOfBounds as oobDefault,
   initSnake,
+  wrapPoint,
+  randomFreeCell,
+  generateObstacles,
 } from '@/utils/logic';
-import { FOOD_EMOJIS } from '@/constants/game';
+import { FOOD_EMOJIS, POWER_UP_CONFIG } from '@/constants/game';
+
+export type GameConfig = {
+  cols: number;
+  rows: number;
+  wrap: boolean;
+  obstacleCount: number;
+  powerChance: number;
+};
 
 /**
  * Core game state + rules (no rendering).
- * Accepts callbacks for events like eating or dying, and an optional bounds override.
+ * Supports obstacles, wrap mode, and power-up food.
  */
 export function useSnakeGame(
-  pickFreeCell: (snake: XY[]) => XY,
+  config: GameConfig,
   opts?: {
-    onEat?: () => void;
+    onEat?: (value: number, kind: FoodKind) => void;
     onDie?: () => void;
-    isOutOfBounds?: (p: XY) => boolean; // overrides default bounds if provided
   }
 ) {
+  const { cols, rows, wrap, obstacleCount, powerChance } = config;
+
   const dirRef = useRef<Dir>('right');
   const nextDirRef = useRef<Dir | null>(null);
-  const snakeRef = useRef<XY[]>(initSnake());
+  const snakeRef = useRef<XY[]>(initSnake(cols, rows));
   const foodRef = useRef<Food | null>(null);
+  const obstaclesRef = useRef<XY[]>([]);
 
   const [alive, setAlive] = useState(true);
   const [score, setScore] = useState(0);
 
   const spawnFood = useCallback(
     (snake: XY[]): Food => {
-      const coords = pickFreeCell(snake);
-      const emoji = FOOD_EMOJIS[Math.floor(Math.random() * FOOD_EMOJIS.length)];
-      return { ...coords, emoji };
+      const blocked = [...obstaclesRef.current];
+      const coords = randomFreeCell(snake, cols, rows, blocked);
+
+      const isPowerUp = Math.random() < powerChance;
+      const kinds: FoodKind[] = ['golden', 'freeze', 'ghost', 'multiplier'];
+      const kind: FoodKind = isPowerUp
+        ? kinds[Math.floor(Math.random() * kinds.length)]
+        : 'normal';
+
+      const cfg = POWER_UP_CONFIG[kind];
+      const emoji =
+        kind === 'normal'
+          ? FOOD_EMOJIS[Math.floor(Math.random() * FOOD_EMOJIS.length)]
+          : cfg.emoji;
+
+      return {
+        ...coords,
+        kind,
+        emoji,
+        value: cfg.value,
+      };
     },
-    [pickFreeCell]
+    [cols, rows, powerChance]
   );
 
   const reset = useCallback(() => {
-    snakeRef.current = initSnake();
+    const snake = initSnake(cols, rows);
+    snakeRef.current = snake;
     dirRef.current = 'right';
     nextDirRef.current = null;
-    foodRef.current = spawnFood(snakeRef.current);
+    obstaclesRef.current = generateObstacles(obstacleCount, cols, rows, snake);
+    foodRef.current = spawnFood(snake);
     setAlive(true);
     setScore(0);
-  }, [spawnFood]);
+  }, [cols, rows, obstacleCount, spawnFood]);
 
-  /** Queue a direction; consumed once per tick */
   const turn = useCallback((d: Dir) => {
     nextDirRef.current = d;
   }, []);
 
   const tick = useCallback(() => {
-    // apply queued turn
     if (nextDirRef.current) {
       dirRef.current = nextDirRef.current;
       nextDirRef.current = null;
@@ -62,13 +92,28 @@ export function useSnakeGame(
     const head = snake[0];
     if (!head) return;
 
-    const nh = nextHead(head, dirRef.current);
+    let nh = nextHead(head, dirRef.current);
+
+    if (wrap) {
+      nh = wrapPoint(nh, cols, rows);
+    } else {
+      const oob =
+        nh.x < 0 || nh.x >= cols || nh.y < 0 || nh.y >= rows;
+      if (oob) {
+        setAlive(false);
+        opts?.onDie?.();
+        return;
+      }
+    }
+
     const food = foodRef.current;
     const willEat = !!food && eq(nh, food);
     const bodyToCheck = willEat ? snake : snake.slice(0, -1);
 
-    const isOOB = opts?.isOutOfBounds ?? oobDefault;
-    if (isOOB(nh) || bodyToCheck.some((s) => eq(s, nh))) {
+    const hitBody = bodyToCheck.some((s) => eq(s, nh));
+    const hitObstacle = obstaclesRef.current.some((o) => eq(o, nh));
+
+    if (hitBody || hitObstacle) {
       setAlive(false);
       opts?.onDie?.();
       return;
@@ -76,14 +121,24 @@ export function useSnakeGame(
 
     if (willEat) {
       snake.unshift(nh);
-      setScore((s) => s + 1);
+      const value = food.value ?? 1;
+      setScore((s) => s + value);
       foodRef.current = spawnFood(snake);
-      opts?.onEat?.();
+      opts?.onEat?.(value, food.kind);
     } else {
       snake.unshift(nh);
       snake.pop();
     }
-  }, [opts, spawnFood]);
+  }, [cols, rows, wrap, opts, spawnFood]);
 
-  return { alive, score, snakeRef, foodRef, reset, turn, tick };
+  return {
+    alive,
+    score,
+    snakeRef,
+    foodRef,
+    obstaclesRef,
+    reset,
+    turn,
+    tick,
+  };
 }

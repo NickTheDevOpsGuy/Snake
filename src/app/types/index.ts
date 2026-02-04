@@ -9,18 +9,29 @@ export * from './ui';
 // Basic coordinate point
 export type XY = { x: number; y: number };
 
-// Food extends XY so it can hold an emoji
-export type Food = XY & { emoji?: string };
+export type FoodKind = 'normal' | 'golden' | 'freeze' | 'ghost' | 'multiplier';
+
+// Food extends XY so it can hold rendering + gameplay metadata
+export type Food = XY & {
+  kind: FoodKind;
+  emoji?: string;
+  value?: number;
+  expiresAt?: number;
+};
 
 // Snake movement direction
 export type Dir = 'up' | 'down' | 'left' | 'right';
 
-// Keyboard direction mapping
+// Keyboard direction mapping (arrows + WASD)
 export const keyToDir: Record<string, Dir> = {
   ArrowUp: 'up',
   ArrowDown: 'down',
   ArrowLeft: 'left',
   ArrowRight: 'right',
+  KeyW: 'up',
+  KeyS: 'down',
+  KeyA: 'left',
+  KeyD: 'right',
 };
 
 // Equality helper for comparing coordinates
