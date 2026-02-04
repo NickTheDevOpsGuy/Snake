@@ -1,20 +1,20 @@
 // src/app/utils/logic.ts
-import type { XY, Dir } from "@/types";
+import type { XY, Dir } from '@/types';
 
 export const eq = (a: XY, b: XY) => a.x === b.x && a.y === b.y;
 
 export const isOpposite = (a: Dir, b: Dir) =>
-  (a === "up" && b === "down") ||
-  (a === "down" && b === "up") ||
-  (a === "left" && b === "right") ||
-  (a === "right" && b === "left");
+  (a === 'up' && b === 'down') ||
+  (a === 'down' && b === 'up') ||
+  (a === 'left' && b === 'right') ||
+  (a === 'right' && b === 'left');
 
 export const nextHead = (h: XY, d: Dir): XY =>
-  d === "up"
+  d === 'up'
     ? { x: h.x, y: h.y - 1 }
-    : d === "down"
+    : d === 'down'
       ? { x: h.x, y: h.y + 1 }
-      : d === "left"
+      : d === 'left'
         ? { x: h.x - 1, y: h.y }
         : { x: h.x + 1, y: h.y };
 
@@ -43,7 +43,7 @@ export function randomFreeCell(
   snake: XY[],
   cols: number,
   rows: number,
-  blocked: XY[] = [],
+  blocked: XY[] = []
 ): XY {
   const isBlocked = (x: number, y: number) =>
     snake.some((c) => c.x === x && c.y === y) ||
@@ -59,9 +59,9 @@ export function randomFreeCell(
 /** Infer current direction from head→second segment. */
 export function inferDirFromSnake(snake: XY[]): Dir {
   const [h, s] = snake;
-  if (!s) return "right";
-  if (h.x === s.x) return h.y < s.y ? "up" : "down";
-  return h.x < s.x ? "left" : "right";
+  if (!s) return 'right';
+  if (h.x === s.x) return h.y < s.y ? 'up' : 'down';
+  return h.x < s.x ? 'left' : 'right';
 }
 
 export function wrapPoint(p: XY, cols: number, rows: number): XY {
@@ -83,7 +83,7 @@ export function generateObstacles(
   cols: number,
   rows: number,
   snake: XY[],
-  padding = 2,
+  padding = 2
 ): XY[] {
   if (count <= 0) return [];
   const taken = new Set<string>();

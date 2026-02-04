@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export function useGameScale(gameWidth: number, gameHeight: number) {
   const [scale, setScale] = useState(1);
@@ -15,8 +15,8 @@ export function useGameScale(gameWidth: number, gameHeight: number) {
     };
 
     update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
   }, [gameWidth, gameHeight]);
 
   return scale;

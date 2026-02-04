@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useState } from "react";
-import type { GameDifficulty } from "@/constants/game";
+import { useCallback, useEffect, useState } from 'react';
+import type { GameDifficulty } from '@/constants/game';
 
-const MUTE_KEY = "snake-muted";
-const DIFFICULTY_KEY = "snake-difficulty";
-const PLAYER_NAME_KEY = "snake-player-name";
+const MUTE_KEY = 'snake-muted';
+const DIFFICULTY_KEY = 'snake-difficulty';
+const PLAYER_NAME_KEY = 'snake-player-name';
 
 function loadMuted(): boolean {
   try {
-    return localStorage.getItem(MUTE_KEY) === "true";
+    return localStorage.getItem(MUTE_KEY) === 'true';
   } catch {
     return false;
   }
@@ -17,24 +17,24 @@ function loadDifficulty(): GameDifficulty {
   try {
     const v = localStorage.getItem(DIFFICULTY_KEY);
     if (
-      v === "relaxed" ||
-      v === "classic" ||
-      v === "expert" ||
-      v === "blitz" ||
-      v === "endless"
+      v === 'relaxed' ||
+      v === 'classic' ||
+      v === 'expert' ||
+      v === 'blitz' ||
+      v === 'endless'
     )
       return v;
   } catch {
     // ignore
   }
-  return "classic";
+  return 'classic';
 }
 
 function loadPlayerName(): string {
   try {
-    return localStorage.getItem(PLAYER_NAME_KEY) ?? "";
+    return localStorage.getItem(PLAYER_NAME_KEY) ?? '';
   } catch {
-    return "";
+    return '';
   }
 }
 

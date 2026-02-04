@@ -1,5 +1,5 @@
-import { supabase, isSupabaseConfigured } from "@/supabase/client";
-import type { GameDifficulty } from "@/constants/game";
+import { supabase, isSupabaseConfigured } from '@/supabase/client';
+import type { GameDifficulty } from '@/constants/game';
 
 export type LeaderboardScore = {
   rank: number;
@@ -12,15 +12,15 @@ export type LeaderboardScore = {
 /** Fetch global leaderboard for a difficulty. */
 export async function fetchLeaderboard(
   difficulty: GameDifficulty,
-  limit = 10,
+  limit = 10
 ): Promise<LeaderboardScore[]> {
   if (!isSupabaseConfigured() || !supabase) return [];
 
   const { data, error } = await supabase
-    .from("snake_scores")
-    .select("score, player_name, created_at")
-    .eq("difficulty", difficulty)
-    .order("score", { ascending: false })
+    .from('snake_scores')
+    .select('score, player_name, created_at')
+    .eq('difficulty', difficulty)
+    .order('score', { ascending: false })
     .limit(limit);
 
   if (error) return [];
@@ -29,7 +29,7 @@ export async function fetchLeaderboard(
     rank: i + 1,
     score: row.score,
     difficulty,
-    playerName: row.player_name ?? "Anonymous",
+    playerName: row.player_name ?? 'Anonymous',
     createdAt: row.created_at,
   }));
 }
@@ -38,11 +38,11 @@ export async function fetchLeaderboard(
 export async function submitScore(
   score: number,
   difficulty: GameDifficulty,
-  playerName?: string,
+  playerName?: string
 ): Promise<boolean> {
   if (!isSupabaseConfigured() || !supabase) return false;
 
-  const { error } = await supabase.from("snake_scores").insert({
+  const { error } = await supabase.from('snake_scores').insert({
     score,
     difficulty,
     player_name: playerName?.trim() || null,

@@ -2,11 +2,11 @@
 
 // palette tokens (helps if you switch dark/light later)
 export const COLORS = {
-  background: "#0a0a0a",
-  grid: "#666",
-  snake: "#22c55e",
-  food: "#ef4444",
-  text: "#f8fafc",
+  background: '#0a0a0a',
+  grid: '#666',
+  snake: '#22c55e',
+  food: '#ef4444',
+  text: '#f8fafc',
 };
 
 // animation timing

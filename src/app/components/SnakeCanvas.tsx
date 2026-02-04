@@ -1,31 +1,37 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import confetti from "canvas-confetti";
-import { type GameDifficulty } from "@/constants/game";
-import type { Dir } from "@/types";
-import { inferDirFromSnake, isOpposite } from "@/utils/logic";
-import { drawFrame } from "@/utils/canvas";
-import { computeDelayMs } from "@/utils/speed";
-import { useTicker } from "@/hooks/useTicker";
-import { useSnakeGame } from "@/hooks/useSnakeGame";
-import { useInput } from "@/hooks/useInput";
-import { useCanvas2D } from "@/hooks/useCanvas2D";
-import { useBestScore } from "@/hooks/useBestScore";
-import { usePauseHotkey } from "@/hooks/usePauseHotkey";
-import { useSwipe } from "@/hooks/useSwipe";
-import { useLeaderboard } from "@/hooks/useLeaderboard";
-import { useGameSetup } from "@/hooks/useGameSetup";
-import { useGameScale } from "@/hooks/useGameScale";
-import { useSettings } from "@/hooks/useSettings";
-import MenuScreen from "@/components/MenuScreen";
-import HUD from "@/components/HUD";
-import MobileControls from "@/components/MobileControls";
-import CountdownOverlay from "@/components/CountdownOverlay";
-import GameOverOverlay from "@/components/GameOverOverlay";
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import confetti from 'canvas-confetti';
+import { type GameDifficulty } from '@/constants/game';
+import type { Dir } from '@/types';
+import { inferDirFromSnake, isOpposite } from '@/utils/logic';
+import { drawFrame } from '@/utils/canvas';
+import { computeDelayMs } from '@/utils/speed';
+import { useTicker } from '@/hooks/useTicker';
+import { useSnakeGame } from '@/hooks/useSnakeGame';
+import { useInput } from '@/hooks/useInput';
+import { useCanvas2D } from '@/hooks/useCanvas2D';
+import { useBestScore } from '@/hooks/useBestScore';
+import { usePauseHotkey } from '@/hooks/usePauseHotkey';
+import { useSwipe } from '@/hooks/useSwipe';
+import { useLeaderboard } from '@/hooks/useLeaderboard';
+import { useGameSetup } from '@/hooks/useGameSetup';
+import { useGameScale } from '@/hooks/useGameScale';
+import { useSettings } from '@/hooks/useSettings';
+import MenuScreen from '@/components/MenuScreen';
+import HUD from '@/components/HUD';
+import MobileControls from '@/components/MobileControls';
+import CountdownOverlay from '@/components/CountdownOverlay';
+import GameOverOverlay from '@/components/GameOverOverlay';
 
 export default function SnakeCanvas() {
   const { canvasRef, ctxRef } = useCanvas2D();
-  const { muted, setMuted, playerName, setPlayerName, persistDifficulty, initialDifficulty } =
-    useSettings();
+  const {
+    muted,
+    setMuted,
+    playerName,
+    setPlayerName,
+    persistDifficulty,
+    initialDifficulty,
+  } = useSettings();
 
   const {
     phase,
@@ -52,33 +58,25 @@ export default function SnakeCanvas() {
       obstacleCount: T.obstacleCount,
       powerChance: T.powerChance,
     }),
-    [T],
+    [T]
   );
 
-  const {
-    alive,
-    score,
-    snakeRef,
-    foodRef,
-    obstaclesRef,
-    reset,
-    turn,
-    tick,
-  } = useSnakeGame(gameConfig, {
-    onEat: (value, kind) => {
-      playEat();
-      confetti({ particleCount: 12, spread: 60, origin: { y: 0.5 } });
-    },
-    onDie: playDie,
-  });
+  const { alive, score, snakeRef, foodRef, obstaclesRef, reset, turn, tick } =
+    useSnakeGame(gameConfig, {
+      onEat: (value, kind) => {
+        playEat();
+        confetti({ particleCount: 12, spread: 60, origin: { y: 0.5 } });
+      },
+      onDie: playDie,
+    });
 
   useEffect(() => {
-    if (!alive && phase === "playing") setPhase("gameover");
+    if (!alive && phase === 'playing') setPhase('gameover');
   }, [alive, phase, setPhase]);
 
   const getCurrentDir = useCallback<() => Dir>(
     () => inferDirFromSnake(snakeRef.current),
-    [snakeRef],
+    [snakeRef]
   );
 
   const draw = useCallback(() => {
@@ -90,7 +88,7 @@ export default function SnakeCanvas() {
       foodRef.current,
       snakeRef.current,
       obstaclesRef.current,
-      T,
+      T
     );
   }, [alive, ctxRef, foodRef, snakeRef, obstaclesRef, T]);
 
@@ -102,18 +100,18 @@ export default function SnakeCanvas() {
   const gameStartTimeRef = useRef<number>(0);
 
   useEffect(() => {
-    if (!alive && phase === "gameover" && score > 0 && !submittedRef.current) {
+    if (!alive && phase === 'gameover' && score > 0 && !submittedRef.current) {
       submittedRef.current = true;
       submitScore(score, difficulty, playerName || undefined);
     }
   }, [alive, phase, score, difficulty, playerName, submitScore]);
 
   useEffect(() => {
-    if (phase === "playing") submittedRef.current = false;
+    if (phase === 'playing') submittedRef.current = false;
   }, [phase]);
 
   useEffect(() => {
-    if (phase === "menu") {
+    if (phase === 'menu') {
       reset();
       draw();
     }
@@ -135,7 +133,7 @@ export default function SnakeCanvas() {
         draw();
       }
     },
-    phase === "playing",
+    phase === 'playing'
   );
 
   const startGame = useCallback(() => {
@@ -143,22 +141,22 @@ export default function SnakeCanvas() {
     reset();
     draw();
     gameStartTimeRef.current = Date.now();
-    setPhase("countdown");
+    setPhase('countdown');
   }, [reset, draw, setPaused, setPhase]);
 
   const startPlaying = useCallback(() => {
-    setPhase("playing");
+    setPhase('playing');
   }, [setPhase]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if ((phase === "menu" || phase === "gameover") && e.code === "Space") {
+      if ((phase === 'menu' || phase === 'gameover') && e.code === 'Space') {
         e.preventDefault();
         startGame();
       }
     };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   }, [phase, startGame]);
 
   const handleTurn = useCallback(
@@ -169,7 +167,7 @@ export default function SnakeCanvas() {
         playMove();
       }
     },
-    [getCurrentDir, turn, playMove],
+    [getCurrentDir, turn, playMove]
   );
 
   useInput({
@@ -181,11 +179,11 @@ export default function SnakeCanvas() {
   });
 
   useSwipe({
-    enabled: phase === "playing" && alive && !paused,
+    enabled: phase === 'playing' && alive && !paused,
     onSwipe: handleTurn,
   });
 
-  usePauseHotkey(alive && phase === "playing", () => setPaused((p) => !p));
+  usePauseHotkey(alive && phase === 'playing', () => setPaused((p) => !p));
 
   const gameWidth = T.COLS * T.CELL;
   const gameHeight = T.ROWS * T.CELL;
@@ -194,8 +192,8 @@ export default function SnakeCanvas() {
   const isNewBest = !alive && score > 0 && score >= best;
 
   return (
-    <div className="flex min-h-screen min-h-dvh w-full flex-col items-center justify-center gap-4 bg-zinc-950 p-4 pb-32 md:pb-4">
-      {(phase === "menu" || phase === "gameover") && (
+    <div className='flex min-h-screen min-h-dvh w-full flex-col items-center justify-center gap-4 bg-zinc-950 p-4 pb-32 md:pb-4'>
+      {(phase === 'menu' || phase === 'gameover') && (
         <MenuScreen
           difficulty={difficulty}
           onDifficultyChange={setDifficulty}
@@ -208,14 +206,14 @@ export default function SnakeCanvas() {
       )}
 
       <div
-        className="flex shrink-0 items-center justify-center"
+        className='flex shrink-0 items-center justify-center'
         style={{
-          maxWidth: "100%",
-          maxHeight: "min(70dvh, 600px)",
+          maxWidth: '100%',
+          maxHeight: 'min(70dvh, 600px)',
         }}
       >
         <div
-          className="relative origin-center overflow-hidden rounded-xl shadow-2xl ring-2 ring-zinc-700"
+          className='relative origin-center overflow-hidden rounded-xl shadow-2xl ring-2 ring-zinc-700'
           style={{
             width: gameWidth,
             height: gameHeight,
@@ -226,17 +224,17 @@ export default function SnakeCanvas() {
             ref={canvasRef}
             width={gameWidth}
             height={gameHeight}
-            className="block"
+            className='block'
           />
-          {phase === "countdown" && (
+          {phase === 'countdown' && (
             <CountdownOverlay visible onComplete={startPlaying} />
           )}
-          {paused && phase === "playing" && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/60">
-              <span className="font-mono text-xl text-white">Paused (P)</span>
+          {paused && phase === 'playing' && (
+            <div className='absolute inset-0 flex items-center justify-center bg-black/60'>
+              <span className='font-mono text-xl text-white'>Paused (P)</span>
             </div>
           )}
-          {!alive && phase === "gameover" && (
+          {!alive && phase === 'gameover' && (
             <GameOverOverlay
               score={score}
               best={best}
@@ -253,7 +251,7 @@ export default function SnakeCanvas() {
         </div>
       </div>
 
-      {(phase === "playing" || phase === "countdown") && (
+      {(phase === 'playing' || phase === 'countdown') && (
         <HUD
           score={score}
           best={best}
@@ -263,15 +261,15 @@ export default function SnakeCanvas() {
         />
       )}
 
-      {(phase === "playing" || phase === "countdown") && (
-        <div className="text-center font-mono text-xs text-zinc-500">
-          {(1000 / delayMs).toFixed(1)} moves/s · Arrows / WASD / Swipe / Tap · P
-          pause
+      {(phase === 'playing' || phase === 'countdown') && (
+        <div className='text-center font-mono text-xs text-zinc-500'>
+          {(1000 / delayMs).toFixed(1)} moves/s · Arrows / WASD / Swipe / Tap ·
+          P pause
         </div>
       )}
 
       <MobileControls
-        visible={phase === "playing" && alive && !paused}
+        visible={phase === 'playing' && alive && !paused}
         onDirection={handleTurn}
       />
     </div>
