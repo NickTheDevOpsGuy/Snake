@@ -79,19 +79,11 @@ export default function SnakeCanvas() {
     }
   }, []);
 
-  const {
-    alive,
-    score,
-    snakeRef,
-    foodRef,
-    obstaclesRef,
-    reset,
-    turn,
-    tick,
-  } = useSnakeGame(gameConfig, {
-    onEat: () => play(eatSnd),
-    onDie: () => play(dieSnd),
-  });
+  const { alive, score, snakeRef, foodRef, obstaclesRef, reset, turn, tick } =
+    useSnakeGame(gameConfig, {
+      onEat: () => play(eatSnd),
+      onDie: () => play(dieSnd),
+    });
 
   useEffect(() => {
     if (!alive && phase === 'playing') setPhase('gameover');
@@ -217,9 +209,7 @@ export default function SnakeCanvas() {
             <select
               className='rounded-lg border border-zinc-600 bg-zinc-800 px-3 py-2 text-sm text-white'
               value={difficulty}
-              onChange={(e) =>
-                setDifficulty(e.target.value as GameDifficulty)
-              }
+              onChange={(e) => setDifficulty(e.target.value as GameDifficulty)}
             >
               {DIFFICULTIES.map((k) => (
                 <option key={k} value={k}>

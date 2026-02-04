@@ -34,9 +34,7 @@ export default function Leaderboard({ entries }: Props) {
               {DIFFICULTY_PRESETS[e.difficulty as GameDifficulty]?.label ??
                 e.difficulty}
             </span>
-            <span className='text-xs text-zinc-600'>
-              {formatDate(e.date)}
-            </span>
+            <span className='text-xs text-zinc-600'>{formatDate(e.date)}</span>
           </li>
         ))}
       </ul>

@@ -97,8 +97,7 @@ export function useSnakeGame(
     if (wrap) {
       nh = wrapPoint(nh, cols, rows);
     } else {
-      const oob =
-        nh.x < 0 || nh.x >= cols || nh.y < 0 || nh.y >= rows;
+      const oob = nh.x < 0 || nh.x >= cols || nh.y < 0 || nh.y >= rows;
       if (oob) {
         setAlive(false);
         opts?.onDie?.();

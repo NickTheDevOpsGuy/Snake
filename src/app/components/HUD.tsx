@@ -7,13 +7,7 @@ type Props = {
   onRestart: () => void;
 };
 
-export default function HUD({
-  score,
-  best,
-  bump,
-  alive,
-  onRestart,
-}: Props) {
+export default function HUD({ score, best, bump, alive, onRestart }: Props) {
   return (
     <div className='mt-3 text-center font-mono text-lg text-gray-100'>
       <div className='flex items-center justify-center gap-4'>
