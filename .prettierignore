@@ -1,6 +1,3 @@
-# Ignore generated Supabase types
-supabase/**/*.types.ts
-
 # Ignore dependencies and build output
 node_modules/
 dist/

@@ -1,15 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
-import type { GameDifficulty } from '@/constants/game';
-import { submitScore as submitToSupabase } from '@/services/leaderboardService';
-import { isSupabaseConfigured } from '@/supabase/client';
+import { useCallback, useState } from "react";
+import type { GameDifficulty } from "@/constants/game";
 
 export type LocalLeaderboardEntry = {
   score: number;
   difficulty: GameDifficulty;
+  playerName: string | null;
   date: number;
 };
 
-const STORAGE_KEY = 'snake-leaderboard';
+const STORAGE_KEY = "snake-leaderboard";
 const MAX_ENTRIES = 10;
 
 function loadLocalLeaderboard(): LocalLeaderboardEntry[] {
@@ -37,19 +36,17 @@ export function useLeaderboard() {
 
   const submitScore = useCallback(
     (score: number, difficulty: GameDifficulty, playerName?: string) => {
-      if (isSupabaseConfigured()) {
-        void submitToSupabase(score, difficulty, playerName);
-      }
+      const name = playerName?.trim() || null;
       const next: LocalLeaderboardEntry[] = [
         ...localEntries,
-        { score, difficulty, date: Date.now() },
+        { score, difficulty, playerName: name, date: Date.now() },
       ]
         .sort((a, b) => b.score - a.score)
         .slice(0, MAX_ENTRIES);
       setLocalEntries(next);
       saveLocalLeaderboard(next);
     },
-    [localEntries]
+    [localEntries],
   );
 
   return { localEntries, submitScore };

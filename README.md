@@ -45,7 +45,8 @@ Try Snake here: https://snake-beryl-six.vercel.app/
 - 🔊 **Sound Effects** — satisfying audio feedback for moves, food, and game-over
 - 🧩 **Difficulty Presets** — easy, medium, and hard options that scale board size and speed
 - 🥕 **Emoji Food Items** — random fruits and veggies add playful variety
-- 💾 **Persistent Best Score** — keeps your top score across sessions
+- 💾 **Persistent Best Score** — keeps your top score across sessions (local leaderboard per difficulty)
+- 🎉 **Celebrations** — confetti on new high score and every 5 points
 - ⏸️ **Pause / Resume Hotkey** — toggle with the `P` key
 - 🧱 **Dynamic Speed Scaling** — snake speeds up as you grow
 - 🧭 **Modular Hook Architecture** — reusable logic with `useSnakeGame`, `useTicker`, and friends
@@ -53,15 +54,9 @@ Try Snake here: https://snake-beryl-six.vercel.app/
 
 ---
 
-## 🏆 Supabase Leaderboard (Optional)
+## 🏆 Leaderboard
 
-To enable the global leaderboard:
-
-1. Create a [Supabase](https://supabase.com) project
-2. Run the migration in `supabase/migrations/001_snake_scores.sql` in the SQL Editor
-3. Copy `.env.example` to `.env.local` and add your `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`
-
-Without Supabase, the game still works with local-only score storage.
+Scores are stored locally in your browser. Your best scores per difficulty appear in the Leaderboard from the main menu.
 
 ---
 
@@ -88,7 +83,7 @@ Check upcoming ideas and milestones in the [Project Roadmap](https://github.com/
 
 ## Acknowledgements
 
-Minesweeper is a community project, shaped by everyone who’s played, tested, and contributed.  
+Snake is a community project, shaped by everyone who’s played, tested, and contributed.  
 Every commit, idea, and bug report makes the game better.
 
 [![Contributors](https://contrib.rocks/image?repo=NickTheDevOpsGuy/Snake)](./CONTRIBUTORS.md)
@@ -136,6 +131,7 @@ Meet all our amazing [Contributors](./CONTRIBUTORS.md)
 │       ├── assets
 │       │   └── snake-gameplay.gif
 │       ├── components
+│       │   ├── AchievementsModal.tsx
 │       │   ├── CountdownOverlay.tsx
 │       │   ├── GameOverOverlay.tsx
 │       │   ├── HUD.tsx
@@ -144,13 +140,20 @@ Meet all our amazing [Contributors](./CONTRIBUTORS.md)
 │       │   ├── MenuScreen.tsx
 │       │   ├── MobileControls.tsx
 │       │   ├── SettingsModal.tsx
-│       │   └── SnakeCanvas.tsx
+│       │   ├── SnakeCanvas.tsx
+│       │   └── StatsScreen.tsx
 │       ├── constants
-│       │   └── game.ts
+│       │   ├── foodThemes.ts
+│       │   ├── game.ts
+│       │   ├── skins.ts
+│       │   └── themes.ts
+│       ├── data
+│       │   └── achievements.ts
 │       ├── hooks
 │       │   ├── useBestScore.ts
 │       │   ├── useCanvas2D.ts
 │       │   ├── useGameScale.ts
+│       │   ├── useGameSession.ts
 │       │   ├── useGameSetup.ts
 │       │   ├── useInput.ts
 │       │   ├── useLeaderboard.ts
@@ -160,20 +163,23 @@ Meet all our amazing [Contributors](./CONTRIBUTORS.md)
 │       │   ├── useSwipe.ts
 │       │   └── useTicker.ts
 │       ├── main.tsx
+│       ├── services
+│       │   ├── achievementService.ts
+│       │   └── statsService.ts
 │       ├── styles
 │       │   └── App.css
 │       ├── types
 │       │   ├── game.ts
 │       │   ├── index.ts
 │       │   └── ui.ts
-│       ├── services
-│       │   └── leaderboardService.ts
-│       ├── supabase
-│       │   └── client.ts
 │       └── utils
 │           ├── canvas.ts
 │           ├── gameTick.ts
+│           ├── haptics.ts
 │           ├── logic.ts
+│           ├── seedRandom.ts
+│           ├── share.ts
+│           ├── soundGenerator.ts
 │           └── speed.ts
 ├── tsconfig.json
 ├── tsconfig.node.json
@@ -208,13 +214,13 @@ npm install
 npm run dev
 ```
 
-4. Run tests:
+4. Run tests (optional):
 
 ```bash
 npm test
 ```
 
-6. In your browser, visit [http://localhost:5173](http://localhost:5173)
+5. In your browser, visit [http://localhost:5173](http://localhost:5173)
 
 ---
 
@@ -222,8 +228,8 @@ npm test
 
 | Name                        | Version | Description                         |
 | :-------------------------- | :------ | :---------------------------------- |
-| [React](https://react.dev/) | ^18.3.1 | UI library for building components. |
-| [Vite](https://vitejs.dev/) | ^6.0.5  | Fast dev server & bundler.          |
+| [React](https://react.dev/) | ^19.x   | UI library for building components. |
+| [Vite](https://vitejs.dev/) | ^7.x    | Fast dev server & bundler.          |
 
 ---
 

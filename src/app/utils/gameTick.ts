@@ -1,12 +1,12 @@
-import type { XY, Dir, Food } from '@/types';
-import { eq, nextHead, wrapPoint } from './logic';
+import type { XY, Dir, Food } from "@/types";
+import { eq, nextHead, wrapPoint } from "./logic";
 
 export function computeNextHead(
   head: XY,
   dir: Dir,
   cols: number,
   rows: number,
-  wrap: boolean
+  wrap: boolean,
 ): XY {
   let nh = nextHead(head, dir);
   if (wrap) nh = wrapPoint(nh, cols, rows);
@@ -21,13 +21,13 @@ export function checkCollisions(
   nh: XY,
   bodyToCheck: XY[],
   obstacles: XY[],
-  ghostActive: boolean
-): 'body' | 'obstacle' | 'none' {
+  ghostActive: boolean,
+): "body" | "obstacle" | "none" {
   const hitBody = bodyToCheck.some((s) => eq(s, nh));
   const hitObstacle = obstacles.some((o) => eq(o, nh));
-  if (hitBody && !ghostActive) return 'body';
-  if (hitObstacle) return 'obstacle';
-  return 'none';
+  if (hitBody && !ghostActive) return "body";
+  if (hitObstacle) return "obstacle";
+  return "none";
 }
 
 export function willEatFood(nh: XY, food: Food | null): boolean {

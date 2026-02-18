@@ -1,18 +1,18 @@
-import { useCallback, useRef, useState } from 'react';
-import type { XY, Dir, Food, FoodKind } from '@/types';
+import { useCallback, useRef, useState } from "react";
+import type { XY, Dir, Food, FoodKind } from "@/types";
 import {
   eq,
   initSnake,
   randomFreeCell,
   generateObstacles,
-} from '@/utils/logic';
+} from "@/utils/logic";
 import {
   computeNextHead,
   isOutOfBounds,
   checkCollisions,
   willEatFood,
-} from '@/utils/gameTick';
-import { FOOD_EMOJIS, POWER_UP_CONFIG } from '@/constants/game';
+} from "@/utils/gameTick";
+import { FOOD_EMOJIS, POWER_UP_CONFIG } from "@/constants/game";
 
 export type GameConfig = {
   cols: number;
@@ -31,17 +31,20 @@ export function useSnakeGame(
   opts?: {
     onEat?: (value: number, kind: FoodKind) => void;
     onDie?: () => void;
-  }
+  },
 ) {
   const { cols, rows, wrap, obstacleCount, powerChance } = config;
 
-  const dirRef = useRef<Dir>('right');
+  const dirRef = useRef<Dir>("right");
   const nextDirRef = useRef<Dir | null>(null);
   const snakeRef = useRef<XY[]>(initSnake(cols, rows));
   const foodRef = useRef<Food | null>(null);
   const obstaclesRef = useRef<XY[]>([]);
   const freezeUntilRef = useRef<number>(0);
   const ghostUntilRef = useRef<number>(0);
+  const foodEatenRef = useRef(0);
+  const ghostUsedRef = useRef(0);
+  const freezeUsedRef = useRef(0);
 
   const [alive, setAlive] = useState(true);
   const [score, setScore] = useState(0);
@@ -52,14 +55,14 @@ export function useSnakeGame(
       const coords = randomFreeCell(snake, cols, rows, blocked);
 
       const isPowerUp = Math.random() < powerChance;
-      const kinds: FoodKind[] = ['golden', 'freeze', 'ghost', 'multiplier'];
+      const kinds: FoodKind[] = ["golden", "freeze", "ghost", "multiplier"];
       const kind: FoodKind = isPowerUp
         ? kinds[Math.floor(Math.random() * kinds.length)]
-        : 'normal';
+        : "normal";
 
       const cfg = POWER_UP_CONFIG[kind];
       const emoji =
-        kind === 'normal'
+        kind === "normal"
           ? FOOD_EMOJIS[Math.floor(Math.random() * FOOD_EMOJIS.length)]
           : cfg.emoji;
 
@@ -70,18 +73,21 @@ export function useSnakeGame(
         value: cfg.value,
       };
     },
-    [cols, rows, powerChance]
+    [cols, rows, powerChance],
   );
 
   const reset = useCallback(() => {
     const snake = initSnake(cols, rows);
     snakeRef.current = snake;
-    dirRef.current = 'right';
+    dirRef.current = "right";
     nextDirRef.current = null;
     obstaclesRef.current = generateObstacles(obstacleCount, cols, rows, snake);
     foodRef.current = spawnFood(snake);
     freezeUntilRef.current = 0;
     ghostUntilRef.current = 0;
+    foodEatenRef.current = 0;
+    ghostUsedRef.current = 0;
+    freezeUsedRef.current = 0;
     setAlive(true);
     setScore(0);
   }, [cols, rows, obstacleCount, spawnFood]);
@@ -119,10 +125,10 @@ export function useSnakeGame(
       nh,
       bodyToCheck,
       obstaclesRef.current,
-      ghostActive
+      ghostActive,
     );
 
-    if (collision !== 'none') {
+    if (collision !== "none") {
       setAlive(false);
       opts?.onDie?.();
       return;
@@ -132,15 +138,28 @@ export function useSnakeGame(
       snake.unshift(nh);
       const value = food.value ?? 1;
       setScore((s) => s + value);
+      foodEatenRef.current += 1;
+      if (food.kind === "freeze") {
+        freezeUntilRef.current = now + 2500;
+        freezeUsedRef.current += 1;
+      }
+      if (food.kind === "ghost") {
+        ghostUntilRef.current = now + 4000;
+        ghostUsedRef.current += 1;
+      }
       foodRef.current = spawnFood(snake);
       opts?.onEat?.(value, food.kind);
-      if (food.kind === 'freeze') freezeUntilRef.current = now + 2500;
-      if (food.kind === 'ghost') ghostUntilRef.current = now + 4000;
     } else {
       snake.unshift(nh);
       snake.pop();
     }
   }, [cols, rows, wrap, opts, spawnFood]);
+
+  const getGameStats = useCallback(() => ({
+    foodEaten: foodEatenRef.current,
+    ghostUsed: ghostUsedRef.current,
+    freezeUsed: freezeUsedRef.current,
+  }), []);
 
   return {
     alive,
@@ -151,5 +170,6 @@ export function useSnakeGame(
     reset,
     turn,
     tick,
+    getGameStats,
   };
 }

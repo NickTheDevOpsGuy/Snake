@@ -1,5 +1,5 @@
-# .github/workflows/linkmap-ci.yml
-name: 🐍 Snake — CI (Prettier · ESLint · TSC)
+# .github/workflows/snake-ci.yml
+name: 🐍 Snake — CI (Lint · Build · Vitest · Playwright)
 
 on:
   pull_request:
@@ -11,8 +11,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint-typecheck:
-    name: 🎨 Prettier · ✨ ESLint · 🛠️ TypeScript
+  ci:
+    name: 🎨 Lint · 🔧 Build · 🧪 Vitest · 🎭 Playwright
     runs-on: ubuntu-latest
 
     defaults:
@@ -33,8 +33,14 @@ jobs:
       - name: 📦 Install dependencies
         run: npm ci
 
-      - name: 📦 Install dependencies
-        run: npm ci
-
       - name: 🔧 Build App (Vite)
         run: npm run build
+
+      - name: 🧪 Unit tests (Vitest)
+        run: npm run test
+
+      - name: 🎭 Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: 🎭 E2E tests (Playwright)
+        run: npm run test:e2e

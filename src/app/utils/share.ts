@@ -1,13 +1,13 @@
 export async function shareScore(
   score: number,
   difficulty: string,
-  best: number
+  best: number,
 ): Promise<boolean> {
   const text = `I scored ${score} in Snake (${difficulty})! 🐍 My best: ${best}`;
   if (navigator.share) {
     try {
       await navigator.share({
-        title: 'Snake Score',
+        title: "Snake Score",
         text,
       });
       return true;

@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef } from 'react';
-import type { Dir } from '@/types';
+import { useCallback, useEffect, useRef } from "react";
+import type { Dir } from "@/types";
 
 const MIN_SWIPE_DIST = 30;
 
@@ -16,7 +16,7 @@ export function useSwipe(opts: {
       const t = e.touches[0];
       if (t) startRef.current = { x: t.clientX, y: t.clientY };
     },
-    [enabled]
+    [enabled],
   );
 
   const handleEnd = useCallback(
@@ -34,21 +34,21 @@ export function useSwipe(opts: {
       if (adx < MIN_SWIPE_DIST && ady < MIN_SWIPE_DIST) return;
 
       if (adx > ady) {
-        onSwipe(dx > 0 ? 'right' : 'left');
+        onSwipe(dx > 0 ? "right" : "left");
       } else {
-        onSwipe(dy > 0 ? 'down' : 'up');
+        onSwipe(dy > 0 ? "down" : "up");
       }
     },
-    [enabled, onSwipe]
+    [enabled, onSwipe],
   );
 
   useEffect(() => {
     const target = document;
-    target.addEventListener('touchstart', handleStart, { passive: true });
-    target.addEventListener('touchend', handleEnd, { passive: true });
+    target.addEventListener("touchstart", handleStart, { passive: true });
+    target.addEventListener("touchend", handleEnd, { passive: true });
     return () => {
-      target.removeEventListener('touchstart', handleStart);
-      target.removeEventListener('touchend', handleEnd);
+      target.removeEventListener("touchstart", handleStart);
+      target.removeEventListener("touchend", handleEnd);
     };
   }, [handleStart, handleEnd]);
 }

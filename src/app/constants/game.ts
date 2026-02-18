@@ -1,11 +1,11 @@
 // Game-wide configuration and presets
 
 export type GameDifficulty =
-  | 'relaxed'
-  | 'classic'
-  | 'expert'
-  | 'blitz'
-  | 'endless';
+  | "relaxed"
+  | "classic"
+  | "expert"
+  | "blitz"
+  | "endless";
 
 export type GameTuning = {
   CELL: number;
@@ -19,7 +19,7 @@ export type GameTuning = {
   powerChance: number;
   label: string;
   description: string;
-  speedCurve?: 'linear' | 'ease-in' | 'ease-out';
+  speedCurve?: "linear" | "ease-in" | "ease-out";
 };
 
 // Difficulty presets (adjust these to taste)
@@ -34,9 +34,9 @@ export const DIFFICULTY_PRESETS: Record<GameDifficulty, GameTuning> = {
     wrap: true,
     obstacleCount: 0,
     powerChance: 0.1,
-    label: 'Relaxed',
-    description: 'Chill speed, wrap-around edges, great for warming up.',
-    speedCurve: 'ease-out',
+    label: "Relaxed",
+    description: "Chill speed, wrap-around edges, great for warming up.",
+    speedCurve: "ease-out",
   },
   classic: {
     CELL: 26,
@@ -48,9 +48,9 @@ export const DIFFICULTY_PRESETS: Record<GameDifficulty, GameTuning> = {
     wrap: false,
     obstacleCount: 2,
     powerChance: 0.12,
-    label: 'Classic',
-    description: 'Balanced pace with light obstacles and occasional power-ups.',
-    speedCurve: 'linear',
+    label: "Classic",
+    description: "Balanced pace with light obstacles and occasional power-ups.",
+    speedCurve: "linear",
   },
   expert: {
     CELL: 22,
@@ -62,9 +62,9 @@ export const DIFFICULTY_PRESETS: Record<GameDifficulty, GameTuning> = {
     wrap: false,
     obstacleCount: 8,
     powerChance: 0.16,
-    label: 'Expert',
-    description: 'Faster ramp, tighter space, dodging lots of barriers.',
-    speedCurve: 'ease-in',
+    label: "Expert",
+    description: "Faster ramp, tighter space, dodging lots of barriers.",
+    speedCurve: "ease-in",
   },
   blitz: {
     CELL: 20,
@@ -76,9 +76,9 @@ export const DIFFICULTY_PRESETS: Record<GameDifficulty, GameTuning> = {
     wrap: false,
     obstacleCount: 4,
     powerChance: 0.2,
-    label: 'Blitz',
-    description: 'Starts fast, gets wild—perfect for short intense runs.',
-    speedCurve: 'ease-in',
+    label: "Blitz",
+    description: "Starts fast, gets wild—perfect for short intense runs.",
+    speedCurve: "ease-in",
   },
   endless: {
     CELL: 18,
@@ -90,25 +90,25 @@ export const DIFFICULTY_PRESETS: Record<GameDifficulty, GameTuning> = {
     wrap: true,
     obstacleCount: 3,
     powerChance: 0.14,
-    label: 'Endless',
-    description: 'Massive board with wrap edges—how long can you last?',
-    speedCurve: 'linear',
+    label: "Endless",
+    description: "Massive board with wrap edges—how long can you last?",
+    speedCurve: "linear",
   },
 };
 
 // Emoji pool for normal food
-export const FOOD_EMOJIS = ['🍎', '🍌', '🍇', '🧀', '🍉', '🍓', '🥕', '🌽'];
+export const FOOD_EMOJIS = ["🍎", "🍌", "🍇", "🧀", "🍉", "🍓", "🥕", "🌽"];
 
 // Power-up food config
-import type { FoodKind } from '@/types';
+import type { FoodKind } from "@/types";
 
 export const POWER_UP_CONFIG: Record<
   FoodKind,
   { emoji: string; value: number; label: string }
 > = {
-  normal: { emoji: '🍎', value: 1, label: '+1' },
-  golden: { emoji: '⭐', value: 5, label: '+5' },
-  freeze: { emoji: '❄️', value: 1, label: 'Freeze' },
-  ghost: { emoji: '👻', value: 2, label: 'Ghost' },
-  multiplier: { emoji: '🔥', value: 3, label: '+3' },
+  normal: { emoji: "🍎", value: 1, label: "+1" },
+  golden: { emoji: "⭐", value: 5, label: "+5" },
+  freeze: { emoji: "❄️", value: 1, label: "Freeze" },
+  ghost: { emoji: "👻", value: 2, label: "Ghost" },
+  multiplier: { emoji: "🔥", value: 3, label: "+3" },
 };

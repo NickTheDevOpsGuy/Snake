@@ -1,7 +1,7 @@
-import type { GameDifficulty } from '@/constants/game';
+import type { GameDifficulty } from "@/constants/game";
 
-const STATS_KEY = 'snake-stats';
-const ACHIEVEMENTS_KEY = 'snake-achievements';
+const STATS_KEY = "snake-stats";
+const ACHIEVEMENTS_KEY = "snake-achievements";
 
 export type GameStats = {
   totalGames: number;
@@ -60,7 +60,7 @@ export function recordGame(
   difficulty: GameDifficulty,
   foodEaten: number,
   ghostUsed: number,
-  freezeUsed: number
+  freezeUsed: number,
 ) {
   const stats = loadStats();
   stats.totalGames += 1;
