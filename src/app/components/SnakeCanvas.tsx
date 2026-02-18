@@ -1,31 +1,31 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import confetti from "canvas-confetti";
-import { type GameDifficulty } from "@/constants/game";
-import type { AchievementId } from "@/data/achievements";
-import type { Dir } from "@/types";
-import { inferDirFromSnake, isOpposite } from "@/utils/logic";
-import { drawFrame } from "@/utils/canvas";
-import { computeDelayMs } from "@/utils/speed";
-import { vibrateEat, vibrateDie } from "@/utils/haptics";
-import { recordGame, getStats } from "@/services/statsService";
-import { checkAchievements } from "@/services/achievementService";
-import { useTicker } from "@/hooks/useTicker";
-import { useSnakeGame } from "@/hooks/useSnakeGame";
-import { useInput } from "@/hooks/useInput";
-import { useCanvas2D } from "@/hooks/useCanvas2D";
-import { useBestScore } from "@/hooks/useBestScore";
-import { usePauseHotkey } from "@/hooks/usePauseHotkey";
-import { useSwipe } from "@/hooks/useSwipe";
-import { useLeaderboard } from "@/hooks/useLeaderboard";
-import { useGameSession } from "@/hooks/useGameSession";
-import { useGameSetup } from "@/hooks/useGameSetup";
-import { useGameScale } from "@/hooks/useGameScale";
-import { useSettings } from "@/hooks/useSettings";
-import MenuScreen from "@/components/MenuScreen";
-import HUD from "@/components/HUD";
-import MobileControls from "@/components/MobileControls";
-import CountdownOverlay from "@/components/CountdownOverlay";
-import GameOverOverlay from "@/components/GameOverOverlay";
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import confetti from 'canvas-confetti';
+import { type GameDifficulty } from '@/constants/game';
+import type { AchievementId } from '@/data/achievements';
+import type { Dir } from '@/types';
+import { inferDirFromSnake, isOpposite } from '@/utils/logic';
+import { drawFrame } from '@/utils/canvas';
+import { computeDelayMs } from '@/utils/speed';
+import { vibrateEat, vibrateDie } from '@/utils/haptics';
+import { recordGame, getStats } from '@/services/statsService';
+import { checkAchievements } from '@/services/achievementService';
+import { useTicker } from '@/hooks/useTicker';
+import { useSnakeGame } from '@/hooks/useSnakeGame';
+import { useInput } from '@/hooks/useInput';
+import { useCanvas2D } from '@/hooks/useCanvas2D';
+import { useBestScore } from '@/hooks/useBestScore';
+import { usePauseHotkey } from '@/hooks/usePauseHotkey';
+import { useSwipe } from '@/hooks/useSwipe';
+import { useLeaderboard } from '@/hooks/useLeaderboard';
+import { useGameSession } from '@/hooks/useGameSession';
+import { useGameSetup } from '@/hooks/useGameSetup';
+import { useGameScale } from '@/hooks/useGameScale';
+import { useSettings } from '@/hooks/useSettings';
+import MenuScreen from '@/components/MenuScreen';
+import HUD from '@/components/HUD';
+import MobileControls from '@/components/MobileControls';
+import CountdownOverlay from '@/components/CountdownOverlay';
+import GameOverOverlay from '@/components/GameOverOverlay';
 
 const COMBO_WINDOW_MS = 2500;
 
@@ -65,7 +65,7 @@ export default function SnakeCanvas() {
       obstacleCount: T.obstacleCount,
       powerChance: T.powerChance,
     }),
-    [T],
+    [T]
   );
 
   const lastMilestoneRef = useRef(0);
@@ -75,26 +75,36 @@ export default function SnakeCanvas() {
   const statsRecordedRef = useRef(false);
   const [newAchievements, setNewAchievements] = useState<AchievementId[]>([]);
 
-  const { alive, score, snakeRef, foodRef, obstaclesRef, reset, turn, tick, getGameStats } =
-    useSnakeGame(gameConfig, {
-      onEat: (value, kind) => {
-        const now = Date.now();
-        if (now - lastEatTimeRef.current < COMBO_WINDOW_MS) {
-          comboRef.current += 1;
-        } else {
-          comboRef.current = 1;
-        }
-        lastEatTimeRef.current = now;
-        if (comboRef.current > comboMaxRef.current) comboMaxRef.current = comboRef.current;
-        playEat();
-        vibrateEat();
-        confetti({ particleCount: 12, spread: 60, origin: { y: 0.5 } });
-      },
-      onDie: () => {
-        playDie();
-        vibrateDie();
-      },
-    });
+  const {
+    alive,
+    score,
+    snakeRef,
+    foodRef,
+    obstaclesRef,
+    reset,
+    turn,
+    tick,
+    getGameStats,
+  } = useSnakeGame(gameConfig, {
+    onEat: (value, kind) => {
+      const now = Date.now();
+      if (now - lastEatTimeRef.current < COMBO_WINDOW_MS) {
+        comboRef.current += 1;
+      } else {
+        comboRef.current = 1;
+      }
+      lastEatTimeRef.current = now;
+      if (comboRef.current > comboMaxRef.current)
+        comboMaxRef.current = comboRef.current;
+      playEat();
+      vibrateEat();
+      confetti({ particleCount: 12, spread: 60, origin: { y: 0.5 } });
+    },
+    onDie: () => {
+      playDie();
+      vibrateDie();
+    },
+  });
 
   // Mini celebration every 5 points
   useEffect(() => {
@@ -106,27 +116,27 @@ export default function SnakeCanvas() {
         particleCount: 8,
         spread: 50,
         origin: { y: 0.4 },
-        colors: ["#34d399", "#fbbf24"],
+        colors: ['#34d399', '#fbbf24'],
       });
     }
   }, [alive, score]);
 
   useEffect(() => {
-    if (!alive && phase === "playing") setPhase("gameover");
+    if (!alive && phase === 'playing') setPhase('gameover');
   }, [alive, phase, setPhase]);
 
   useEffect(() => {
-    if (phase === "countdown") {
+    if (phase === 'countdown') {
       lastEatTimeRef.current = 0;
       comboRef.current = 0;
       comboMaxRef.current = 0;
       setNewAchievements([]);
     }
-    if (phase === "playing") statsRecordedRef.current = false;
+    if (phase === 'playing') statsRecordedRef.current = false;
   }, [phase]);
 
   useEffect(() => {
-    if (!alive && phase === "gameover" && !statsRecordedRef.current) {
+    if (!alive && phase === 'gameover' && !statsRecordedRef.current) {
       statsRecordedRef.current = true;
       const { foodEaten, ghostUsed, freezeUsed } = getGameStats();
       recordGame(score, difficulty, foodEaten, ghostUsed, freezeUsed);
@@ -138,7 +148,7 @@ export default function SnakeCanvas() {
         ghostUsed,
         freezeUsed,
         comboMaxRef.current,
-        stats.totalGames,
+        stats.totalGames
       );
       if (newlyUnlocked.length > 0) setNewAchievements(newlyUnlocked);
     }
@@ -146,7 +156,7 @@ export default function SnakeCanvas() {
 
   const getCurrentDir = useCallback<() => Dir>(
     () => inferDirFromSnake(snakeRef.current),
-    [snakeRef],
+    [snakeRef]
   );
 
   const draw = useCallback(() => {
@@ -158,7 +168,7 @@ export default function SnakeCanvas() {
       foodRef.current,
       snakeRef.current,
       obstaclesRef.current,
-      T,
+      T
     );
   }, [alive, ctxRef, foodRef, snakeRef, obstaclesRef, T]);
 
@@ -177,7 +187,7 @@ export default function SnakeCanvas() {
     setPaused,
     reset,
     draw,
-    startPhase: "countdown",
+    startPhase: 'countdown',
   });
 
   useEffect(() => {
@@ -195,7 +205,7 @@ export default function SnakeCanvas() {
         draw();
       }
     },
-    phase === "playing",
+    phase === 'playing'
   );
 
   const handleTurn = useCallback(
@@ -206,7 +216,7 @@ export default function SnakeCanvas() {
         playMove();
       }
     },
-    [getCurrentDir, turn, playMove],
+    [getCurrentDir, turn, playMove]
   );
 
   useInput({
@@ -218,11 +228,11 @@ export default function SnakeCanvas() {
   });
 
   useSwipe({
-    enabled: phase === "playing" && alive && !paused,
+    enabled: phase === 'playing' && alive && !paused,
     onSwipe: handleTurn,
   });
 
-  usePauseHotkey(alive && phase === "playing", () => setPaused((p) => !p));
+  usePauseHotkey(alive && phase === 'playing', () => setPaused((p) => !p));
 
   const gameWidth = T.COLS * T.CELL;
   const gameHeight = T.ROWS * T.CELL;
@@ -231,8 +241,8 @@ export default function SnakeCanvas() {
   const isNewBest = !alive && score > 0 && score >= best;
 
   return (
-    <div className="flex min-h-dvh min-h-screen w-full flex-col items-center justify-center gap-4 bg-zinc-950 p-4 pb-32 md:pb-4">
-      {(phase === "menu" || phase === "gameover") && (
+    <div className='flex min-h-dvh min-h-screen w-full flex-col items-center justify-center gap-4 bg-zinc-950 p-4 pb-32 md:pb-4'>
+      {(phase === 'menu' || phase === 'gameover') && (
         <MenuScreen
           difficulty={difficulty}
           onDifficultyChange={setDifficulty}
@@ -247,14 +257,14 @@ export default function SnakeCanvas() {
       )}
 
       <div
-        className="flex shrink-0 items-center justify-center"
+        className='flex shrink-0 items-center justify-center'
         style={{
-          maxWidth: "100%",
-          maxHeight: "min(70dvh, 600px)",
+          maxWidth: '100%',
+          maxHeight: 'min(70dvh, 600px)',
         }}
       >
         <div
-          className="relative origin-center overflow-hidden rounded-xl shadow-2xl ring-2 ring-zinc-700"
+          className='relative origin-center overflow-hidden rounded-xl shadow-2xl ring-2 ring-zinc-700'
           style={{
             width: gameWidth,
             height: gameHeight,
@@ -265,17 +275,17 @@ export default function SnakeCanvas() {
             ref={canvasRef}
             width={gameWidth}
             height={gameHeight}
-            className="block"
+            className='block'
           />
-          {phase === "countdown" && (
+          {phase === 'countdown' && (
             <CountdownOverlay visible onComplete={startPlaying} />
           )}
-          {paused && phase === "playing" && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/60">
-              <span className="font-mono text-xl text-white">Paused (P)</span>
+          {paused && phase === 'playing' && (
+            <div className='absolute inset-0 flex items-center justify-center bg-black/60'>
+              <span className='font-mono text-xl text-white'>Paused (P)</span>
             </div>
           )}
-          {!alive && phase === "gameover" && (
+          {!alive && phase === 'gameover' && (
             <GameOverOverlay
               score={score}
               best={best}
@@ -294,7 +304,7 @@ export default function SnakeCanvas() {
         </div>
       </div>
 
-      {(phase === "playing" || phase === "countdown") && (
+      {(phase === 'playing' || phase === 'countdown') && (
         <HUD
           score={score}
           best={best}
@@ -306,15 +316,15 @@ export default function SnakeCanvas() {
         />
       )}
 
-      {(phase === "playing" || phase === "countdown") && (
-        <div className="text-center font-mono text-xs text-zinc-500">
+      {(phase === 'playing' || phase === 'countdown') && (
+        <div className='text-center font-mono text-xs text-zinc-500'>
           {(1000 / delayMs).toFixed(1)} moves/s · Arrows / WASD / Swipe / Tap ·
           P pause
         </div>
       )}
 
       <MobileControls
-        visible={phase === "playing" && alive && !paused}
+        visible={phase === 'playing' && alive && !paused}
         onDirection={handleTurn}
       />
     </div>

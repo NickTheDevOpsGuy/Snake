@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useRef } from "react";
-import type { GameDifficulty } from "@/constants/game";
+import { useCallback, useEffect, useRef } from 'react';
+import type { GameDifficulty } from '@/constants/game';
 
-type Phase = "menu" | "countdown" | "playing" | "gameover";
+type Phase = 'menu' | 'countdown' | 'playing' | 'gameover';
 
 type Options = {
   phase: Phase;
@@ -9,12 +9,16 @@ type Options = {
   score: number;
   difficulty: GameDifficulty;
   playerName: string;
-  submitScore: (score: number, difficulty: GameDifficulty, name?: string) => void;
+  submitScore: (
+    score: number,
+    difficulty: GameDifficulty,
+    name?: string
+  ) => void;
   setPhase: (p: Phase) => void;
   setPaused: (fn: (prev: boolean) => boolean) => void;
   reset: () => void;
   draw: () => void;
-  startPhase: "countdown";
+  startPhase: 'countdown';
 };
 
 /** Encapsulates game start, score submission, and space-to-start. */
@@ -45,22 +49,22 @@ export function useGameSession(opts: Options) {
   }, [setPaused, reset, draw, setPhase, startPhase]);
 
   const startPlaying = useCallback(() => {
-    setPhase("playing");
+    setPhase('playing');
   }, [setPhase]);
 
   useEffect(() => {
-    if (!alive && phase === "gameover" && score > 0 && !submittedRef.current) {
+    if (!alive && phase === 'gameover' && score > 0 && !submittedRef.current) {
       submittedRef.current = true;
       submitScore(score, difficulty, playerName || undefined);
     }
   }, [alive, phase, score, difficulty, playerName, submitScore]);
 
   useEffect(() => {
-    if (phase === "playing") submittedRef.current = false;
+    if (phase === 'playing') submittedRef.current = false;
   }, [phase]);
 
   useEffect(() => {
-    if (phase === "menu") {
+    if (phase === 'menu') {
       reset();
       draw();
     }
@@ -69,13 +73,13 @@ export function useGameSession(opts: Options) {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if ((phase === "menu" || phase === "gameover") && e.code === "Space") {
+      if ((phase === 'menu' || phase === 'gameover') && e.code === 'Space') {
         e.preventDefault();
         startGame();
       }
     };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   }, [phase, startGame]);
 
   return { startGame, startPlaying, gameStartTimeRef };

@@ -1,5 +1,5 @@
-import { useCallback, useState } from "react";
-import type { GameDifficulty } from "@/constants/game";
+import { useCallback, useState } from 'react';
+import type { GameDifficulty } from '@/constants/game';
 
 export type LocalLeaderboardEntry = {
   score: number;
@@ -8,7 +8,7 @@ export type LocalLeaderboardEntry = {
   date: number;
 };
 
-const STORAGE_KEY = "snake-leaderboard";
+const STORAGE_KEY = 'snake-leaderboard';
 const MAX_ENTRIES = 10;
 
 function loadLocalLeaderboard(): LocalLeaderboardEntry[] {
@@ -46,7 +46,7 @@ export function useLeaderboard() {
       setLocalEntries(next);
       saveLocalLeaderboard(next);
     },
-    [localEntries],
+    [localEntries]
   );
 
   return { localEntries, submitScore };

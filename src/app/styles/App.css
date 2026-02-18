@@ -1,5 +1,5 @@
 /* ——— Tailwind base ——— */
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* ——— Custom animation ——— */
 @keyframes bump {
@@ -35,11 +35,13 @@ body {
 /* Focus visible for keyboard users (accessibility) */
 button:focus-visible,
 a:focus-visible,
-[role="button"]:focus-visible,
+[role='button']:focus-visible,
 select:focus-visible,
 input:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px #09090b, 0 0 0 4px #34d399;
+  box-shadow:
+    0 0 0 2px #09090b,
+    0 0 0 4px #34d399;
 }
 
 canvas {

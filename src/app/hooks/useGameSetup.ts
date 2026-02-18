@@ -1,23 +1,23 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { DIFFICULTY_PRESETS, type GameDifficulty } from "@/constants/game";
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { DIFFICULTY_PRESETS, type GameDifficulty } from '@/constants/game';
 
-export type Phase = "menu" | "countdown" | "playing" | "gameover";
+export type Phase = 'menu' | 'countdown' | 'playing' | 'gameover';
 
 export function useGameSetup(opts?: {
   muted?: boolean;
   initialDifficulty?: GameDifficulty;
 }) {
   const muted = opts?.muted ?? false;
-  const [phase, setPhase] = useState<Phase>("menu");
+  const [phase, setPhase] = useState<Phase>('menu');
   const [difficulty, setDifficulty] = useState<GameDifficulty>(
-    opts?.initialDifficulty ?? "classic",
+    opts?.initialDifficulty ?? 'classic'
   );
   const [paused, setPaused] = useState(false);
   const [bump, setBump] = useState(false);
 
-  const eatSnd = useMemo(() => new Audio("/sounds/food.mp3"), []);
-  const dieSnd = useMemo(() => new Audio("/sounds/gameover.mp3"), []);
-  const keySnd = useMemo(() => new Audio("/sounds/move.mp3"), []);
+  const eatSnd = useMemo(() => new Audio('/sounds/food.mp3'), []);
+  const dieSnd = useMemo(() => new Audio('/sounds/gameover.mp3'), []);
+  const keySnd = useMemo(() => new Audio('/sounds/move.mp3'), []);
 
   useEffect(() => {
     eatSnd.volume = 0.7;
@@ -32,10 +32,10 @@ export function useGameSetup(opts?: {
         a.currentTime = 0;
         void a.play();
       } catch (err) {
-        console.error("Audio play exception:", err);
+        console.error('Audio play exception:', err);
       }
     },
-    [muted],
+    [muted]
   );
 
   const playEat = useCallback(() => play(eatSnd), [play, eatSnd]);

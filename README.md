@@ -100,8 +100,17 @@ Meet all our amazing [Contributors](./CONTRIBUTORS.md)
 ```plaintext
 .
 ├── .github
-│   └── workflows
-│       └── snake-ci.yml
+│   ├── ISSUE_TEMPLATE
+│   │   ├── bug.yml
+│   │   ├── config.yml
+│   │   ├── documentation.yml
+│   │   ├── enhancement_refactor.yml
+│   │   ├── feature_request.yml
+│   │   └── question_discussion.yml
+│   ├── workflows
+│   │   ├── snake-ci.yml
+│   │   └── vercel-production.yml
+│   └── pull_request_template.md
 ├── .gitignore
 ├── .husky
 │   ├── pre-commit
@@ -116,6 +125,7 @@ Meet all our amazing [Contributors](./CONTRIBUTORS.md)
 ├── index.html
 ├── package-lock.json
 ├── package.json
+├── playwright.config.ts
 ├── public
 │   ├── snake.svg
 │   └── sounds
@@ -125,6 +135,8 @@ Meet all our amazing [Contributors](./CONTRIBUTORS.md)
 ├── README.md
 ├── scripts
 │   └── precheck.sh
+├── e2e
+│   └── app.spec.ts
 ├── src
 │   └── app
 │       ├── App.tsx
@@ -165,7 +177,9 @@ Meet all our amazing [Contributors](./CONTRIBUTORS.md)
 │       ├── main.tsx
 │       ├── services
 │       │   ├── achievementService.ts
-│       │   └── statsService.ts
+│       │   ├── achievementService.test.ts
+│       │   ├── statsService.ts
+│       │   └── statsService.test.ts
 │       ├── styles
 │       │   └── App.css
 │       ├── types
@@ -177,6 +191,7 @@ Meet all our amazing [Contributors](./CONTRIBUTORS.md)
 │           ├── gameTick.ts
 │           ├── haptics.ts
 │           ├── logic.ts
+│           ├── logic.test.ts
 │           ├── seedRandom.ts
 │           ├── share.ts
 │           ├── soundGenerator.ts
